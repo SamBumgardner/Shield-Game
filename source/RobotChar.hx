@@ -29,9 +29,7 @@ class RobotChar extends PlayerChar
 		//animation.add("u", [6, 7, 6, 8], 6, false);
 		//animation.add("d", [0, 1, 0, 2], 6, false);
 		
-		set_immovable(true);
-		speed = 200;
-		drag.x = drag.y = 1000;
+		speed = 175;
 	}
 	
 	private override function checkInputs():Void
