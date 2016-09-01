@@ -29,8 +29,7 @@ class MechanicChar extends PlayerChar
 		//animation.add("lr", [3, 4, 3, 5], 6, false);
 		//animation.add("u", [6, 7, 6, 8], 6, false);
 		//animation.add("d", [0, 1, 0, 2], 6, false);
-		speed = 275;
-		drag.x = drag.y = 1900;
+		speed = 190;
 	}
 	
 	private override function checkInputs():Void

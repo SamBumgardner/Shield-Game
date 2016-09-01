@@ -36,7 +36,8 @@ class PlayerChar extends FlxSprite
 		if (_left && _right)
 			_left = _right = false;
 		
-		if (_up || _down || _left || _right){
+		if (_up || _down || _left || _right)
+		{
 			var mA:Float = 0;
 			if (_up)
 			{
@@ -81,6 +82,10 @@ class PlayerChar extends FlxSprite
 						//animation.play("d");
 				//}
 			//}
+		}
+		else
+		{
+			velocity.set(0, 0);
 		}
 	}
 	
