@@ -20,7 +20,7 @@ class RobotChar extends PlayerChar
 		
 		loadGraphic(AssetPaths.defender__png, true, 128, 128);
 		setSize(104, 104);
-		offset.set(8, 8);
+		offset.set(12, 12);
 		
 		//setFacingFlip(FlxObject.LEFT, false, false);
 		//setFacingFlip(FlxObject.RIGHT, true, false);
