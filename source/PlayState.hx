@@ -23,6 +23,8 @@ class PlayState extends FlxState
 	private var _mechanicChar:MechanicChar;
 	private var _robotChar:RobotChar;
 	
+	private var _projectileSpawner:ProjectileSpawner;
+	
 	override public function create():Void
 	{
 		#if !FLX_NO_MOUSE
@@ -49,6 +51,8 @@ class PlayState extends FlxState
 		_grpCharacters.add(_robotChar);
 		_grpActors.add(_robotChar);
 		
+		_projectileSpawner = new ProjectileSpawner();
+		add(_projectileSpawner);
 		
 		super.create();
 	}
