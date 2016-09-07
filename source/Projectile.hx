@@ -15,11 +15,10 @@ class Projectile extends FlxSprite
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
-		super(X, Y, SimpleGraphic);
-		
-		setSize(50, 50);
-		
-		makeGraphic(50, 50, FlxColor.RED);
+		super();
+		loadGraphic(AssetPaths.energy_bullet__png, true, 32, 32);
+		setSize(16, 16);
+		offset.set(8, 8);
 	}
 	
 	
