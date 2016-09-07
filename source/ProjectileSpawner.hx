@@ -18,7 +18,7 @@ class ProjectileSpawner extends FlxSprite
 	private var projectileOffsetY:Int = 0;
 	
 	private static var projectilePool:FlxTypedGroup<Projectile>;
-	private static var startingPoolSize:Int = 10;
+	private static var startingPoolSize:Int = 1;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -53,7 +53,8 @@ class ProjectileSpawner extends FlxSprite
 	
 	private function fireProjectile():Void
 	{
-		ProjectileSpawner.projectilePool.recycle(Projectile);
+		var newProjectile = ProjectileSpawner.projectilePool.recycle(Projectile);
+		newProjectile.init(Math.random()*FlxG.width, 0, 90, 100);
 	}
 	
 	override public function update(elapsed:Float):Void 
