@@ -33,7 +33,7 @@ class PlayState extends FlxState
 		
 		_backdrop = new FlxBackdrop(AssetPaths.scrollingBackground__png);
 		add(_backdrop);
-		_backdrop.velocity.set(0, 200);
+		_backdrop.velocity.set(0, 120);
 		
 		_grpBoundaries = FlxCollision.createCameraWall(FlxG.camera, false, 15);
 		add(_grpBoundaries);
