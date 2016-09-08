@@ -62,6 +62,12 @@ class PlayState extends FlxState
 		return FlxSort.byValues(Order, Obj1.y + Obj1.height + (cast Obj1).offset.y, Obj2.y + Obj2.height + (cast Obj2).offset.y);
 	}
 	
+	private function projectileCollisions(actor:Dynamic, projectile:Projectile)
+	{
+		actor.damaged(projectile.damage);
+		projectile.collide();
+	}
+	
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
@@ -72,6 +78,7 @@ class PlayState extends FlxState
 		FlxG.collide(_robotChar, _mechanicChar);
 		FlxG.collide(_grpCharacters, _grpBoundaries);
 		
+		FlxG.overlap(_grpActors, ProjectileSpawner.projectilePool, projectileCollisions);
 		
 		_grpActors.sort(sortByOffsetY, FlxSort.ASCENDING);
 	}

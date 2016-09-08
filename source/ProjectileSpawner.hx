@@ -17,7 +17,7 @@ class ProjectileSpawner extends FlxSprite
 	private var projectileOffsetX:Int = 0;
 	private var projectileOffsetY:Int = 0;
 	
-	private static var projectilePool:FlxTypedGroup<Projectile>;
+	public static var projectilePool:FlxTypedGroup<Projectile>;
 	private static var startingPoolSize:Int = 1;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 

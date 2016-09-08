@@ -30,6 +30,7 @@ class RobotChar extends PlayerChar
 		//animation.add("d", [0, 1, 0, 2], 6, false);
 		
 		speed = 175;
+		health = 100;
 	}
 	
 	private override function checkInputs():Void

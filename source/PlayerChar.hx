@@ -90,6 +90,11 @@ class PlayerChar extends FlxSprite
 		}
 	}
 	
+	public function damaged(damage:Float):Void
+	{
+		hurt(damage);
+	}
+	
 	public override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);

@@ -12,6 +12,7 @@ import flixel.util.FlxColor;
  */
 class Projectile extends FlxSprite
 {
+	public var damage:Float;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -19,6 +20,8 @@ class Projectile extends FlxSprite
 		loadGraphic(AssetPaths.energy_bullet__png, true, 32, 32);
 		setSize(16, 16);
 		offset.set(8, 8);
+		
+		damage = 1;
 	}
 	
 	
@@ -30,6 +33,14 @@ class Projectile extends FlxSprite
 		y = Y;
 		velocity.set(speed, 0);
 		velocity.rotate(FlxPoint.weak(0, 0), rotation);
+	}
+	
+	
+	// Called when projectile's hitbox overlaps with something that can be damaged.
+	
+	public function collide():Void
+	{
+		kill();
 	}
 	
 	override public function update(elapsed:Float):Void 
