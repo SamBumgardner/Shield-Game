@@ -62,7 +62,6 @@ class ProjectileSpawner extends FlxSprite
 		if (checkTimer())
 		{
 			fireProjectile();
-			trace("fired Projectile!");
 		}
 		super.update(elapsed);
 	}
