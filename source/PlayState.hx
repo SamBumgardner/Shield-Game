@@ -116,12 +116,9 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
-		
-		//Have to recheck collisions once to ensure that they don't pass through each other.
-		FlxG.collide(_grpCharacters, _grpBoundaries);
 		FlxG.collide(_robotChar, _mechanicChar);
-		FlxG.collide(_grpCharacters, _grpBoundaries);
-		
+		FlxG.overlap(_grpBoundaries, _grpCharacters, null, separateAndRemember);
+		FlxG.overlap(_robotChar, _mechanicChar, null, conditionalSeparate);
 		
 		_grpActors.sort(sortByOffsetY, FlxSort.ASCENDING);
 	}
