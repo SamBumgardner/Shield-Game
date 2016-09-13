@@ -13,6 +13,13 @@ import flixel.FlxG;
  */
 class RobotChar extends PlayerChar
 {
+	private var shieldState:FSM;
+	
+	private var shieldActiveSpeed:Int = 100;
+	private var shieldInactiveSpeed:Int = 160;
+	private var shieldMaxCapacity:Int = 100;
+	public var shieldCurrCapacity:Int = 0;
+	private var shieldCapacityCooldown:Int = 1;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
@@ -29,11 +36,13 @@ class RobotChar extends PlayerChar
 		//animation.add("u", [6, 7, 6, 8], 6, false);
 		//animation.add("d", [0, 1, 0, 2], 6, false);
 		
-		speed = 160;
+		speed = shieldInactiveSpeed;
 		health = 100;
 		hurtTime = 4;
 		recoveryTime = 0;
 		injuredColor = 0xaaaaaa;
+		
+		shieldState = new FSM(inactiveShieldState);
 	}
 	
 	private override function checkInputs():Void
