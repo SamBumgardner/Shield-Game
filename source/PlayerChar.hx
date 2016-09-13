@@ -14,6 +14,9 @@ class PlayerChar extends FlxSprite
 {
 	public var speed:Float;
 	
+	public var wallCollidedX:Bool = false;
+	public var wallCollidedY:Bool = false;
+	
 	private var _up:Bool = false;
 	private var _down:Bool = false;
 	private var _left:Bool = false;
