@@ -23,6 +23,8 @@ class PlayState extends FlxState
 	private var _mechanicChar:MechanicChar;
 	private var _robotChar:RobotChar;
 	
+	private var _projectileSpawner:ProjectileSpawner;
+	
 	override public function create():Void
 	{
 		#if !FLX_NO_MOUSE
@@ -31,7 +33,7 @@ class PlayState extends FlxState
 		
 		_backdrop = new FlxBackdrop(AssetPaths.scrollingBackground__png);
 		add(_backdrop);
-		_backdrop.velocity.set(0, 200);
+		_backdrop.velocity.set(0, 120);
 		
 		_grpBoundaries = FlxCollision.createCameraWall(FlxG.camera, false, 15);
 		add(_grpBoundaries);
@@ -49,6 +51,8 @@ class PlayState extends FlxState
 		_grpCharacters.add(_robotChar);
 		_grpActors.add(_robotChar);
 		
+		_projectileSpawner = new ProjectileSpawner();
+		add(_projectileSpawner);
 		
 		super.create();
 	}
@@ -58,6 +62,12 @@ class PlayState extends FlxState
 		return FlxSort.byValues(Order, Obj1.y + Obj1.height + (cast Obj1).offset.y, Obj2.y + Obj2.height + (cast Obj2).offset.y);
 	}
 	
+	private function projectileCollisions(actor:Dynamic, projectile:Projectile)
+	{
+		actor.damaged(projectile.damage);
+		projectile.collide();
+	}
+
 	private function separateAndRemember(Object1:FlxObject, Object2:FlxObject):Bool
 	{
 		var separatedX:Bool = FlxObject.separateX(Object1, Object2);
@@ -117,6 +127,10 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		
 		FlxG.collide(_robotChar, _mechanicChar);
+		FlxG.overlap(_grpActors, ProjectileSpawner.projectilePool, projectileCollisions);
+		
+		//Quick Note: The order of the groups in this call matters!
+		//	_grpBoundaries comes first, then _grpCharacters
 		FlxG.overlap(_grpBoundaries, _grpCharacters, null, separateAndRemember);
 		FlxG.overlap(_robotChar, _mechanicChar, null, conditionalSeparate);
 		

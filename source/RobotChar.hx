@@ -29,7 +29,11 @@ class RobotChar extends PlayerChar
 		//animation.add("u", [6, 7, 6, 8], 6, false);
 		//animation.add("d", [0, 1, 0, 2], 6, false);
 		
-		speed = 175;
+		speed = 160;
+		health = 100;
+		hurtTime = 4;
+		recoveryTime = 0;
+		injuredColor = 0xaaaaaa;
 	}
 	
 	private override function checkInputs():Void
