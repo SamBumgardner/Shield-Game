@@ -58,6 +58,20 @@ class PlayState extends FlxState
 		return FlxSort.byValues(Order, Obj1.y + Obj1.height + (cast Obj1).offset.y, Obj2.y + Obj2.height + (cast Obj2).offset.y);
 	}
 	
+	private function separateAndRemember(Object1:FlxObject, Object2:FlxObject):Bool
+	{
+		var separatedX:Bool = FlxObject.separateX(Object1, Object2);
+		var separatedY:Bool = FlxObject.separateY(Object1, Object2);
+		
+		//The following casts assume that object2 will be an instance of PlayerChar
+		if(separatedX)
+			(cast Object2).wallCollideX = separatedX;
+		if(separatedY)
+			(cast Object2).wallCollideY = separatedY;
+		
+		return separatedX || separatedY;
+	}
+	
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
