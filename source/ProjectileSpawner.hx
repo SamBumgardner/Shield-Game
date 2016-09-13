@@ -11,7 +11,7 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
  */
 class ProjectileSpawner extends FlxSprite
 {
-	private var timerLength:Int = 30;
+	private var timerLength:Int = 10;
 	private var timerValue:Int = 0;
 	
 	private var projectileOffsetX:Int = 0;
