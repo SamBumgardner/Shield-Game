@@ -53,10 +53,80 @@ class RobotChar extends PlayerChar
 		_right = FlxG.keys.anyPressed([D]);
 	}
 	
+	private function inactiveTransition():Int
+	{
+		speed = shieldInactiveSpeed;
+		return -1;
+	}
+	
+	private function inactiveShieldState():Void
+	{
+		if (shieldCurrCapacity > 0)
+			Math.max(shieldCurrCapacity -= shieldCapacityCooldown, 0);
+		
+		return;
+	}
+	
+	private function activatingTransition():Int
+	{
+		speed = 0;
+		//Play animation of bringing up shield
+		shieldState.nextTransition = activeTransition;
+		return 5;
+	}
+	
+	private function activatingShieldState():Void
+	{
+		return;
+	}
+	
+	private function activeTransition():Int
+	{
+		speed = shieldActiveSpeed;
+		// create the projectile-catching thing.
+		return -1;
+	}
+	
+	private function activeShieldState():Void
+	{
+		if (shieldCurrCapacity > shieldMaxCapacity)
+			shieldState.transitionStates(brokenTransition);
+	}
+	
+	private function releasingTransition():Int
+	{
+		speed = 0;
+		//Play animation of returning to normal.
+		
+		shieldState.nextTransition = inactiveTransition;
+		return 5; //should be replaced with however long the animation is.
+	}
+	
+	private function releasingShieldState():Void
+	{
+		return;
+	}
+	
+	private function brokenTransition():Int
+	{
+		return -1;
+	}
+	
+	private function brokenShieldState():Void
+	{
+		if (shieldCurrCapacity > 0)
+			Math.max(shieldCurrCapacity -= shieldCapacityCooldown, 0);
+		
+		if (shieldCurrCapacity == 0)
+			shieldState.transitionStates(inactiveTransition);
+		
+		return;
+	}
 	
 	override public function update(elapsed:Float):Void 
 	{
 		movement();
+		shieldState.update();
 		super.update(elapsed);
 	}
 }
