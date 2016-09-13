@@ -14,6 +14,9 @@ class PlayerChar extends FlxSprite
 {
 	public var speed:Float;
 	
+	public var wallCollidedX:Bool = false;
+	public var wallCollidedY:Bool = false;
+	
 	private var _up:Bool = false;
 	private var _down:Bool = false;
 	private var _left:Bool = false;
@@ -22,7 +25,7 @@ class PlayerChar extends FlxSprite
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
 		super(X, Y);
-		
+		collisonXDrag = false;
 	}
 	
 	private function checkInputs():Void{};
