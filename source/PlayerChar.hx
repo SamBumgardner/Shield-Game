@@ -79,7 +79,6 @@ class PlayerChar extends FlxSprite
 				
 			velocity.set(speed, 0);
 			velocity.rotate(FlxPoint.weak(0, 0), mA);
-			velocity.set(velocity.x, Math.min(velocity.y, 100));
 		
 			//if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
 			//{
