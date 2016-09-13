@@ -31,6 +31,9 @@ class RobotChar extends PlayerChar
 		
 		speed = 175;
 		health = 100;
+		hurtTime = 4;
+		recoveryTime = 0;
+		injuredColor = 0xaaaaaa;
 	}
 	
 	private override function checkInputs():Void

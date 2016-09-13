@@ -31,6 +31,9 @@ class MechanicChar extends PlayerChar
 		//animation.add("d", [0, 1, 0, 2], 6, false);
 		speed = 190;
 		health = 5;
+		hurtTime = 4;
+		recoveryTime = 56;
+		injuredColor = 0xbb0000;
 	}
 	
 	private override function checkInputs():Void
