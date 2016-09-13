@@ -72,6 +72,46 @@ class PlayState extends FlxState
 		return separatedX || separatedY;
 	}
 	
+	private function conditionalSeparate(Object1:FlxObject, Object2:FlxObject):Bool
+	{
+		//The following casts assume that object1 & 2 will be instances of PlayerChar
+		if ((cast Object1).wallCollideX)
+			Object1.immovable = true;
+		else
+			Object1.immovable = false;
+		
+		if ((cast Object2).wallCollideX)
+			Object2.immovable = true;
+		else
+			Object2.immovable = false;
+		
+		var separatedX:Bool = FlxObject.separateX(Object1, Object2);
+		
+		
+		if ((cast Object1).wallCollideY)
+			Object1.immovable = true;
+		else
+			Object1.immovable = false;
+		
+		if ((cast Object2).wallCollideY)
+			Object2.immovable = true;
+		else
+			Object2.immovable = false;
+		
+		var separatedY:Bool = FlxObject.separateY(Object1, Object2);
+		
+		(cast Object1).wallCollideX = false;
+		(cast Object1).wallCollideY = false;
+		Object1.immovable = false;
+		
+		(cast Object2).wallCollideX = false;
+		(cast Object2).wallCollideY = false;
+		Object2.immovable = false;
+		
+		
+		return separatedX || separatedY;
+	}
+	
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
