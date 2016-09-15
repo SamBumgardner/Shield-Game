@@ -13,6 +13,9 @@ import flixel.util.FlxColor;
 class Projectile extends FlxSprite
 {
 	public var damage:Float;
+	private var projectileGroup:Int = 0;
+	
+	public var groupID:FlxBasic;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -38,9 +41,19 @@ class Projectile extends FlxSprite
 	
 	// Called when projectile's hitbox overlaps with something that can be damaged.
 	
-	public function collide():Void
+	public function deadlyCollide():Void
 	{
 		kill();
+	}
+	
+	override public function kill():Void
+	{
+		if (projectileGroup == 1)
+			(cast FlxG.state)._grpEnemyProj.remove(cast groupID, true);
+		else if (projectileGroup == 2)
+			(cast FlxG.state)._grpPlayerProj.remove(cast groupID, true);
+		projectileGroup = 0;
+		super.kill();
 	}
 	
 	override public function update(elapsed:Float):Void 

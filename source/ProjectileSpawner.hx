@@ -54,7 +54,8 @@ class ProjectileSpawner extends FlxSprite
 	private function fireProjectile():Void
 	{
 		var newProjectile = ProjectileSpawner.projectilePool.recycle(Projectile);
-		newProjectile.init(Math.random()*FlxG.width, 0, 90, 100);
+		newProjectile.init(Math.random() * FlxG.width, 0, 90, 100);
+		newProjectile.groupID = (cast FlxG.state)._grpEnemyProj.add(newProjectile);
 	}
 	
 	override public function update(elapsed:Float):Void 
