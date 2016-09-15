@@ -59,12 +59,12 @@ class RobotChar extends PlayerChar
 	private function inactiveTransition():Int
 	{
 		speed = shieldInactiveSpeed;
+		shieldState.activeState = inactiveShieldState;
 		return -1;
 	}
 	
 	private function inactiveShieldState():Void
 	{
-		if (shieldCurrCapacity > 0)
 		if (spacebar)
 			shieldState.transitionStates(activatingTransition);
 		else if (shieldCurrCapacity > 0)
@@ -77,6 +77,7 @@ class RobotChar extends PlayerChar
 	{
 		speed = 0;
 		//Play animation of bringing up shield
+		shieldState.activeState = activatingShieldState;
 		shieldState.nextTransition = activeTransition;
 		return 5;
 	}
@@ -90,12 +91,12 @@ class RobotChar extends PlayerChar
 	{
 		speed = shieldActiveSpeed;
 		// create the projectile-catching thing.
+		shieldState.activeState = activeShieldState;
 		return -1;
 	}
 	
 	private function activeShieldState():Void
 	{
-		if (shieldCurrCapacity > shieldMaxCapacity)
 		if (!spacebar)
 			shieldState.transitionStates(releasingTransition);
 		else if (shieldCurrCapacity > shieldMaxCapacity)
@@ -106,7 +107,7 @@ class RobotChar extends PlayerChar
 	{
 		speed = 0;
 		//Play animation of returning to normal.
-		
+		shieldState.activeState = releasingShieldState;
 		shieldState.nextTransition = inactiveTransition;
 		return 5; //should be replaced with however long the animation is.
 	}
@@ -118,6 +119,7 @@ class RobotChar extends PlayerChar
 	
 	private function brokenTransition():Int
 	{
+		shieldState.activeState = brokenShieldState;
 		return -1;
 	}
 	
