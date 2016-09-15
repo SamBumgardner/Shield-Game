@@ -93,6 +93,8 @@ class RobotChar extends PlayerChar
 	
 	private function activatingShieldState():Void
 	{
+		if (!spacebar)
+			shieldState.transitionStates(releasingTransitionEarly);
 		return;
 	}
 	
@@ -100,7 +102,6 @@ class RobotChar extends PlayerChar
 	{
 		speed = shieldActiveSpeed;
 		shield.on();
-		// create the projectile-catching thing.
 		shieldState.activeState = activeShieldState;
 		return -1;
 	}
@@ -121,6 +122,13 @@ class RobotChar extends PlayerChar
 		shieldState.activeState = releasingShieldState;
 		shieldState.nextTransition = inactiveTransition;
 		return 30; //should be replaced with however long the animation is.
+	}
+	
+	private function releasingTransitionEarly():Int
+	{
+		releasingTransition();
+		//need to play a shorter version of the normal animation.
+		return 30 - shieldState.stateTimer;
 	}
 	
 	private function releasingShieldState():Void
