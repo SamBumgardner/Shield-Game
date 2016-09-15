@@ -16,9 +16,10 @@ class Projectile extends FlxSprite
 	public var damage:Float;
 	public var force:Int;
 	
-	private var projectileGroup:Int = 0;
+	private var projectileGroup:Int = 0; // 0 = no group, 1 = enemy, 2 = player
+	public var currentlyCaught:Bool = false;
 	
-	public var groupID:FlxBasic;
+	//public var groupID:FlxBasic;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -32,10 +33,11 @@ class Projectile extends FlxSprite
 	}
 	
 	
-	// Called each the projectile is recycled
+	// Called each time the projectile is recycled
 	
 	public function init(X:Float, Y:Float, rotation:Float, speed:Float):Void
 	{
+		reset(0, 0);
 		x = X;
 		y = Y;
 		velocity.set(speed, 0);
@@ -54,23 +56,30 @@ class Projectile extends FlxSprite
 	{
 		velocity.set(0, 0);
 		projectileGroup = 2;
-		(cast FlxG.state)._grpEnemyProj.remove(cast groupID, true);
-		groupID = (cast FlxG.state)._grpPlayerProj.add(this);
+		(cast FlxG.state)._grpEnemyProj.remove(cast this, true);
+		(cast FlxG.state)._grpPlayerProj.add(this);
 	}
 	
 	override public function kill():Void
 	{
 		if (projectileGroup == 1)
-			(cast FlxG.state)._grpEnemyProj.remove(cast groupID, true);
+			(cast FlxG.state)._grpEnemyProj.remove(cast this, true);
 		else if (projectileGroup == 2)
-			(cast FlxG.state)._grpPlayerProj.remove(cast groupID, true);
+			(cast FlxG.state)._grpPlayerProj.remove(cast this, true);
 		projectileGroup = 0;
+		
+		if (currentlyCaught)
+		{
+			(cast FlxG.state)._robotChar.shield.caughtProjectiles.remove(cast this, true);
+			currentlyCaught = false;
+		}
+		
 		super.kill();
 	}
 	
 	override public function update(elapsed:Float):Void 
 	{
-		if (!isOnScreen())
+		if (!currentlyCaught && !isOnScreen())
 		{
 			kill();
 		}

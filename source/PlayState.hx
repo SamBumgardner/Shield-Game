@@ -148,9 +148,10 @@ class PlayState extends FlxState
 		FlxG.overlap(_grpBoundaries, _grpCharacters, null, separateAndRemember);
 		FlxG.overlap(_robotChar, _mechanicChar, null, conditionalSeparate);
 		
+		FlxG.overlap(_robotChar.shield, _grpEnemyProj, shieldProjectileCollisions);
 		FlxG.overlap(_grpCharacters, _grpEnemyProj, deadlyProjectileCollisions);
 		FlxG.overlap(_grpEnemies, _grpPlayerProj, deadlyProjectileCollisions);
-		FlxG.overlap(_robotChar.shield, _grpEnemyProj, shieldProjectileCollisions);
+		
 		
 		_robotChar.shield.updateProjectiles();
 		

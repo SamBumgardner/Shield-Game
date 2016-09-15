@@ -33,6 +33,7 @@ class EnergyShield extends FlxSprite
 	{
 		hidden = true;
 		y = -height * 2;
+		caughtProjectiles.forEach(alertRemovedProjectiles);
 		caughtProjectiles.clear();
 	}
 	
@@ -44,9 +45,15 @@ class EnergyShield extends FlxSprite
 	public function projectileCollide(proj:Projectile):Void
 	{
 		caughtProjectiles.add(proj);
+		proj.currentlyCaught = true;
 	}
 	
-	public function moveProjectiles(proj:Projectile):Void
+	public function alertRemovedProjectiles(proj:Projectile):Void
+	{
+		proj.currentlyCaught = false;
+	}
+	
+	private function moveProjectiles(proj:Projectile):Void
 	{
 		var shieldMidpoint = getMidpoint();
 		var projMidpoint = proj.getMidpoint();
