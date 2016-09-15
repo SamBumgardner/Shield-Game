@@ -20,8 +20,14 @@ class RobotChar extends PlayerChar
 	private var shieldMaxCapacity:Int = 100;
 	public var shieldCurrCapacity:Int = 0;
 	private var shieldCapacityCooldown:Int = 1;
+	private var shieldRaiseDelay:Int = 30;
+	private var shieldDropDelay:Int = 30;
 	
 	private var spacebar:Bool;
+	
+	public var shield:EnergyShield;
+	private var shieldOffsetY = -70;
+	private var shieldOffsetX = -64;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
@@ -45,6 +51,9 @@ class RobotChar extends PlayerChar
 		injuredColor = 0xaaaaaa;
 		
 		shieldState = new FSM(inactiveShieldState);
+		
+		shield = new EnergyShield();
+		FlxG.state.add(shield);
 	}
 	
 	private override function checkInputs():Void
@@ -79,7 +88,7 @@ class RobotChar extends PlayerChar
 		//Play animation of bringing up shield
 		shieldState.activeState = activatingShieldState;
 		shieldState.nextTransition = activeTransition;
-		return 5;
+		return 30;
 	}
 	
 	private function activatingShieldState():Void
@@ -90,6 +99,7 @@ class RobotChar extends PlayerChar
 	private function activeTransition():Int
 	{
 		speed = shieldActiveSpeed;
+		shield.on();
 		// create the projectile-catching thing.
 		shieldState.activeState = activeShieldState;
 		return -1;
@@ -106,10 +116,11 @@ class RobotChar extends PlayerChar
 	private function releasingTransition():Int
 	{
 		speed = 0;
+		shield.off();
 		//Play animation of returning to normal.
 		shieldState.activeState = releasingShieldState;
 		shieldState.nextTransition = inactiveTransition;
-		return 5; //should be replaced with however long the animation is.
+		return 30; //should be replaced with however long the animation is.
 	}
 	
 	private function releasingShieldState():Void
@@ -119,6 +130,7 @@ class RobotChar extends PlayerChar
 	
 	private function brokenTransition():Int
 	{
+		shield.off();
 		shieldState.activeState = brokenShieldState;
 		return -1;
 	}
@@ -138,6 +150,7 @@ class RobotChar extends PlayerChar
 	{
 		movement();
 		shieldState.update();
+		shield.updatePosition(elapsed, x - offset.x + shieldOffsetX, y - offset.y + shieldOffsetY);
 		super.update(elapsed);
 	}
 }
