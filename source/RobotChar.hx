@@ -21,6 +21,8 @@ class RobotChar extends PlayerChar
 	public var shieldCurrCapacity:Int = 0;
 	private var shieldCapacityCooldown:Int = 1;
 	
+	private var spacebar:Bool;
+	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
 		super(X, Y);
@@ -51,6 +53,7 @@ class RobotChar extends PlayerChar
 		_down = FlxG.keys.anyPressed([S]);
 		_left = FlxG.keys.anyPressed([A]);
 		_right = FlxG.keys.anyPressed([D]);
+		spacebar = FlxG.keys.checkStatus(32, PRESSED);
 	}
 	
 	private function inactiveTransition():Int
@@ -62,6 +65,9 @@ class RobotChar extends PlayerChar
 	private function inactiveShieldState():Void
 	{
 		if (shieldCurrCapacity > 0)
+		if (spacebar)
+			shieldState.transitionStates(activatingTransition);
+		else if (shieldCurrCapacity > 0)
 			Math.max(shieldCurrCapacity -= shieldCapacityCooldown, 0);
 		
 		return;
@@ -90,6 +96,9 @@ class RobotChar extends PlayerChar
 	private function activeShieldState():Void
 	{
 		if (shieldCurrCapacity > shieldMaxCapacity)
+		if (!spacebar)
+			shieldState.transitionStates(releasingTransition);
+		else if (shieldCurrCapacity > shieldMaxCapacity)
 			shieldState.transitionStates(brokenTransition);
 	}
 	
