@@ -11,7 +11,7 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
  */
 class ProjectileSpawner extends FlxSprite
 {
-	private var timerLength:Int = 60;
+	private var timerLength:Int = 10;
 	private var timerValue:Int = 0;
 	
 	private var projectileOffsetX:Int = 0;
@@ -54,8 +54,8 @@ class ProjectileSpawner extends FlxSprite
 	private function fireProjectile():Void
 	{
 		var newProjectile = ProjectileSpawner.projectilePool.recycle(Projectile);
-		newProjectile.init(/*Math.random() * FlxG.width*/ 400, 0, 90, 100);
-		/*newProjectile.groupID = */(cast FlxG.state)._grpEnemyProj.add(newProjectile);
+		newProjectile.init(Math.random() * FlxG.width, 0, 90, 100);
+		(cast FlxG.state)._grpEnemyProj.add(newProjectile);
 	}
 	
 	override public function update(elapsed:Float):Void 
