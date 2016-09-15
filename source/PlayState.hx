@@ -152,6 +152,7 @@ class PlayState extends FlxState
 		FlxG.overlap(_grpEnemies, _grpPlayerProj, deadlyProjectileCollisions);
 		FlxG.overlap(_robotChar.shield, _grpEnemyProj, shieldProjectileCollisions);
 		
+		_robotChar.shield.updateProjectiles();
 		
 		_grpActors.sort(sortByOffsetY, FlxSort.ASCENDING);
 	}

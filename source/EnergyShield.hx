@@ -15,7 +15,7 @@ class EnergyShield extends FlxSprite
 
 	private var hidden:Bool;
 	
-	private var caughtProjectiles:FlxTypedGroup<Projectile>;
+	public var caughtProjectiles:FlxTypedGroup<Projectile>;
 	private var preferredCaughtDist:Float = 85;
 	private var caughtProjSpeed:Float = 200;
 	
@@ -32,7 +32,7 @@ class EnergyShield extends FlxSprite
 	public function off():Void
 	{
 		hidden = true;
-		y = -height;
+		y = -height * 2;
 		caughtProjectiles.clear();
 	}
 	
@@ -46,7 +46,7 @@ class EnergyShield extends FlxSprite
 		caughtProjectiles.add(proj);
 	}
 	
-	public function updateProjectiles(proj:Projectile):Void
+	public function moveProjectiles(proj:Projectile):Void
 	{
 		var shieldMidpoint = getMidpoint();
 		var projMidpoint = proj.getMidpoint();
@@ -75,9 +75,13 @@ class EnergyShield extends FlxSprite
 		{
 			x = X;
 			y = Y;
-			caughtProjectiles.forEach(updateProjectiles);
-			//iterate through caughtProjectiles and update positions.
 		}
 		update(elapsed);
+	}
+	
+	public function updateProjectiles()
+	{
+		if (!hidden)
+			caughtProjectiles.forEach(moveProjectiles);
 	}
 }
