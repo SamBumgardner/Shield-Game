@@ -76,6 +76,12 @@ class PlayState extends FlxState
 		actor.damaged(projectile.damage);
 		projectile.deadlyCollide();
 	}
+	
+	private function shieldProjectileCollisions(shield:EnergyShield, projectile:Projectile):Void
+	{
+		shield.projectileCollide(projectile);
+		projectile.shieldCollide();
+	}
 
 	private function separateAndRemember(Object1:FlxObject, Object2:FlxObject):Bool
 	{
@@ -144,6 +150,9 @@ class PlayState extends FlxState
 		
 		FlxG.overlap(_grpCharacters, _grpEnemyProj, deadlyProjectileCollisions);
 		FlxG.overlap(_grpEnemies, _grpPlayerProj, deadlyProjectileCollisions);
+		FlxG.overlap(_robotChar.shield, _grpEnemyProj, shieldProjectileCollisions);
+		
+		
 		_grpActors.sort(sortByOffsetY, FlxSort.ASCENDING);
 	}
 }

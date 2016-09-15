@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
@@ -13,6 +14,8 @@ import flixel.util.FlxColor;
 class Projectile extends FlxSprite
 {
 	public var damage:Float;
+	public var force:Int;
+	
 	private var projectileGroup:Int = 0;
 	
 	public var groupID:FlxBasic;
@@ -24,6 +27,7 @@ class Projectile extends FlxSprite
 		setSize(16, 16);
 		offset.set(8, 8);
 		
+		force = 5;
 		damage = 1;
 	}
 	
@@ -44,6 +48,14 @@ class Projectile extends FlxSprite
 	public function deadlyCollide():Void
 	{
 		kill();
+	}
+	
+	public function shieldCollide():Void
+	{
+		velocity.set(0, 0);
+		projectileGroup = 2;
+		(cast FlxG.state)._grpEnemyProj.remove(cast groupID, true);
+		groupID = (cast FlxG.state)._grpPlayerProj.add(this);
 	}
 	
 	override public function kill():Void
