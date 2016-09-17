@@ -23,10 +23,10 @@ class PlayerChar extends FlxSprite
 	private var recoveryTime:Int;
 	private var injuredColor:Int;
 	
-	private var _up:Bool = false;
-	private var _down:Bool = false;
-	private var _left:Bool = false;
-	private var _right:Bool = false;
+	public var _up:Bool = false;
+	public var _down:Bool = false;
+	public var _left:Bool = false;
+	public var _right:Bool = false;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{

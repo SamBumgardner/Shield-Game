@@ -18,12 +18,16 @@ class PlayState extends FlxState
 {
 	private var _backdrop:FlxBackdrop;
 	private var _grpCharacters:FlxTypedGroup<FlxSprite>; //Used for player-specific collisions.
+	private var _grpEnemies:FlxTypedGroup<FlxSprite>;
 	private var _grpActors:FlxTypedGroup<FlxSprite>;
 	private var _grpBoundaries:FlxGroup;
 	private var _mechanicChar:MechanicChar;
 	private var _robotChar:RobotChar;
 	
 	private var _projectileSpawner:ProjectileSpawner;
+	
+	public var _grpEnemyProj:FlxTypedGroup<Projectile>; // Pair of groups used for collision purposes.
+	public var _grpPlayerProj:FlxTypedGroup<Projectile>;
 	
 	override public function create():Void
 	{
@@ -42,6 +46,11 @@ class PlayState extends FlxState
 		add(_grpActors);
 		
 		_grpCharacters = new FlxTypedGroup<FlxSprite>();
+		
+		_grpEnemies = new FlxTypedGroup<FlxSprite>();
+		
+		_grpEnemyProj = new FlxTypedGroup<Projectile>();
+		_grpPlayerProj = new FlxTypedGroup<Projectile>();
 		
 		_mechanicChar = new MechanicChar(500, 500);
 		_grpCharacters.add(_mechanicChar);
@@ -62,10 +71,17 @@ class PlayState extends FlxState
 		return FlxSort.byValues(Order, Obj1.y + Obj1.height + (cast Obj1).offset.y, Obj2.y + Obj2.height + (cast Obj2).offset.y);
 	}
 	
-	private function projectileCollisions(actor:Dynamic, projectile:Projectile)
+	private function deadlyProjectileCollisions(actor:Dynamic, projectile:Projectile):Void
 	{
 		actor.damaged(projectile.damage);
-		projectile.collide();
+		projectile.deadlyCollide();
+	}
+	
+	private function shieldProjectileCollisions(shield:EnergyShield, projectile:Projectile):Void
+	{
+		shield.projectileCollide(projectile);
+		projectile.shieldCollide();
+		_robotChar.addToCapacity(projectile.force);
 	}
 
 	private function separateAndRemember(Object1:FlxObject, Object2:FlxObject):Bool
@@ -84,7 +100,7 @@ class PlayState extends FlxState
 	
 	private function conditionalSeparate(Object1:FlxObject, Object2:FlxObject):Bool
 	{
-		//The following casts assume that object1 & 2 will be instances of PlayerChar
+		//The following casts assume that object1 is the robot, and object2 is the mechanic.
 		if ((cast Object1).wallCollideX)
 			Object1.immovable = true;
 		else
@@ -93,7 +109,10 @@ class PlayState extends FlxState
 		if ((cast Object2).wallCollideX)
 			Object2.immovable = true;
 		else
+		{
+			Object1.immovable = true;
 			Object2.immovable = false;
+		}
 		
 		var separatedX:Bool = FlxObject.separateX(Object1, Object2);
 		
@@ -106,7 +125,10 @@ class PlayState extends FlxState
 		if ((cast Object2).wallCollideY)
 			Object2.immovable = true;
 		else
+		{
+			Object1.immovable = true;
 			Object2.immovable = false;
+		}
 		
 		var separatedY:Bool = FlxObject.separateY(Object1, Object2);
 		
@@ -126,13 +148,21 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
+		_robotChar.immovable = true; //prevents mechanic from pushing robot around.
 		FlxG.collide(_robotChar, _mechanicChar);
-		FlxG.overlap(_grpActors, ProjectileSpawner.projectilePool, projectileCollisions);
+		_robotChar.immovable = false;
 		
 		//Quick Note: The order of the groups in this call matters!
 		//	_grpBoundaries comes first, then _grpCharacters
 		FlxG.overlap(_grpBoundaries, _grpCharacters, null, separateAndRemember);
 		FlxG.overlap(_robotChar, _mechanicChar, null, conditionalSeparate);
+		
+		FlxG.overlap(_robotChar.shield, _grpEnemyProj, shieldProjectileCollisions);
+		FlxG.overlap(_grpCharacters, _grpEnemyProj, deadlyProjectileCollisions);
+		FlxG.overlap(_grpEnemies, _grpPlayerProj, deadlyProjectileCollisions);
+		
+		
+		_robotChar.shield.updateProjectiles();
 		
 		_grpActors.sort(sortByOffsetY, FlxSort.ASCENDING);
 	}
