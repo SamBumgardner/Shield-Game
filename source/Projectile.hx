@@ -24,9 +24,14 @@ class Projectile extends FlxSprite
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super();
-		loadGraphic(AssetPaths.energy_bullet__png, true, 32, 32);
+		
+		loadGraphic(AssetPaths.energyBullet__png, true, 32, 32);
 		setSize(16, 16);
 		offset.set(8, 8);
+		
+		animation.add("enemy", [0], 1, false);
+		animation.add("caught", [1], 1, false);
+		animation.add("released", [1], 1, false, false, true);
 		
 		force = 50;
 		damage = 1;
@@ -42,6 +47,7 @@ class Projectile extends FlxSprite
 		y = Y;
 		velocity.set(speed, 0);
 		velocity.rotate(FlxPoint.weak(0, 0), rotation);
+		animation.play("enemy");
 	}
 	
 	
@@ -58,6 +64,7 @@ class Projectile extends FlxSprite
 		projectileGroup = 2;
 		(cast FlxG.state)._grpEnemyProj.remove(cast this, true);
 		(cast FlxG.state)._grpPlayerProj.add(this);
+		animation.play("caught");
 	}
 	
 	override public function kill():Void
