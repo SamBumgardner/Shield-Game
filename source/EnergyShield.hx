@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
@@ -18,6 +19,7 @@ class EnergyShield extends FlxSprite
 	public var caughtProjectiles:FlxTypedGroup<Projectile>;
 	private var preferredCaughtDist:Float = 85;
 	private var caughtProjSpeed:Float = 200;
+	private var projectileCounter:Int = 0;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -33,7 +35,8 @@ class EnergyShield extends FlxSprite
 	{
 		hidden = true;
 		y = -height * 2;
-		caughtProjectiles.forEach(alertRemovedProjectiles);
+		caughtProjectiles.forEach(fireProjectile);
+		projectileCounter = 0;
 		caughtProjectiles.clear();
 	}
 	
@@ -48,9 +51,37 @@ class EnergyShield extends FlxSprite
 		proj.currentlyCaught = true;
 	}
 	
-	public function alertRemovedProjectiles(proj:Projectile):Void
+	public function fireProjectile(proj:Projectile):Void
 	{
 		proj.currentlyCaught = false;
+		proj.velocity.set(0, -200);
+		var angle = 0.0;
+		
+		if ((cast FlxG.state)._robotChar._left)
+			angle -= 45;
+		if ((cast FlxG.state)._robotChar._right)
+			angle += 45;
+		if ((cast FlxG.state)._robotChar._down)
+			if (angle > 0)
+				angle += 15
+			else if (angle == 0)
+			{
+				if (projectileCounter % 3 == 2)
+					angle += 30;
+				else if (projectileCounter % 3 == 1)
+					angle -= 30;
+				// if projectile counter % 3 == 0
+					// Then do not change angle.
+				projectileCounter++;
+			}
+			else
+				angle -= 15;
+		if ((cast FlxG.state)._robotChar._up)
+			angle /= 2;
+		
+		proj.velocity.rotate(FlxPoint.weak(0, 0), angle);
+		
+		proj.animation.play("released");
 	}
 	
 	private function moveProjectiles(proj:Projectile):Void
