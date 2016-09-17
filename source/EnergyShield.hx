@@ -17,8 +17,9 @@ class EnergyShield extends FlxSprite
 	private var hidden:Bool;
 	
 	public var caughtProjectiles:FlxTypedGroup<Projectile>;
-	private var preferredCaughtDist:Float = 85;
-	private var caughtProjSpeed:Float = 200;
+	private var preferredCaughtDist:Float = 50;
+	private var caughtProjSpeed:Float = 150;
+	
 	private var projectileCounter:Int = 0;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
