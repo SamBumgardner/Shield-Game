@@ -108,7 +108,10 @@ class PlayState extends FlxState
 		if ((cast Object2).wallCollideX)
 			Object2.immovable = true;
 		else
+		{
+			Object1.immovable = true;
 			Object2.immovable = false;
+		}
 		
 		var separatedX:Bool = FlxObject.separateX(Object1, Object2);
 		
@@ -121,7 +124,10 @@ class PlayState extends FlxState
 		if ((cast Object2).wallCollideY)
 			Object2.immovable = true;
 		else
+		{
+			Object1.immovable = true;
 			Object2.immovable = false;
+		}
 		
 		var separatedY:Bool = FlxObject.separateY(Object1, Object2);
 		
@@ -141,7 +147,9 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
+		_robotChar.immovable = true;
 		FlxG.collide(_robotChar, _mechanicChar);
+		_robotChar.immovable = false;
 		
 		//Quick Note: The order of the groups in this call matters!
 		//	_grpBoundaries comes first, then _grpCharacters
