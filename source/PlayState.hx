@@ -100,7 +100,7 @@ class PlayState extends FlxState
 	
 	private function conditionalSeparate(Object1:FlxObject, Object2:FlxObject):Bool
 	{
-		//The following casts assume that object1 & 2 will be instances of PlayerChar
+		//The following casts assume that object1 is the robot, and object2 is the mechanic.
 		if ((cast Object1).wallCollideX)
 			Object1.immovable = true;
 		else
@@ -148,7 +148,7 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
-		_robotChar.immovable = true;
+		_robotChar.immovable = true; //prevents mechanic from pushing robot around.
 		FlxG.collide(_robotChar, _mechanicChar);
 		_robotChar.immovable = false;
 		
