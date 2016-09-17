@@ -41,6 +41,13 @@ class EnergyShield extends FlxSprite
 		caughtProjectiles.clear();
 	}
 	
+	public function broken():Void
+	{
+		hidden = true;
+		y = -height * 2;
+		caughtProjectiles.clear();
+	}
+	
 	public function on():Void
 	{
 		hidden = false;

@@ -28,7 +28,7 @@ class Projectile extends FlxSprite
 		setSize(16, 16);
 		offset.set(8, 8);
 		
-		force = 5;
+		force = 50;
 		damage = 1;
 	}
 	

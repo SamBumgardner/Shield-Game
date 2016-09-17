@@ -81,6 +81,7 @@ class PlayState extends FlxState
 	{
 		shield.projectileCollide(projectile);
 		projectile.shieldCollide();
+		_robotChar.addToCapacity(projectile.force);
 	}
 
 	private function separateAndRemember(Object1:FlxObject, Object2:FlxObject):Bool

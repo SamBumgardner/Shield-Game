@@ -17,9 +17,9 @@ class RobotChar extends PlayerChar
 	
 	private var shieldActiveSpeed:Int = 100;
 	private var shieldInactiveSpeed:Int = 160;
-	private var shieldMaxCapacity:Int = 100;
-	public var shieldCurrCapacity:Int = 0;
-	private var shieldCapacityCooldown:Int = 1;
+	private var shieldMaxCapacity:Int = 1000;
+	private var shieldCurrCapacity:Int = 0;
+	private var shieldCapacityCooldown:Int = 5;
 	private var shieldRaiseDelay:Int = 30;
 	private var shieldDropDelay:Int = 30;
 	
@@ -28,6 +28,8 @@ class RobotChar extends PlayerChar
 	public var shield:EnergyShield;
 	private var shieldOffsetY = -70;
 	private var shieldOffsetX = -64;
+
+	private var brokenSpeed:Int = 50;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
@@ -63,6 +65,11 @@ class RobotChar extends PlayerChar
 		_left = FlxG.keys.anyPressed([A]);
 		_right = FlxG.keys.anyPressed([D]);
 		spacebar = FlxG.keys.checkStatus(32, PRESSED);
+	}
+	
+	public function addToCapacity(force:Int):Void
+	{
+		shieldCurrCapacity += force;
 	}
 	
 	private function inactiveTransition():Int
@@ -138,7 +145,8 @@ class RobotChar extends PlayerChar
 	
 	private function brokenTransition():Int
 	{
-		shield.off();
+		shield.broken();
+		speed = brokenSpeed;
 		shieldState.activeState = brokenShieldState;
 		return -1;
 	}
