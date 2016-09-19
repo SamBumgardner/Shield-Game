@@ -47,11 +47,6 @@ class PlayState extends FlxState
 		
 		_grpCharacters = new FlxTypedGroup<FlxSprite>();
 		
-		_grpEnemies = new FlxTypedGroup<FlxSprite>();
-		
-		_grpEnemyProj = new FlxTypedGroup<Projectile>();
-		_grpPlayerProj = new FlxTypedGroup<Projectile>();
-		
 		_mechanicChar = new MechanicChar(500, 500);
 		_grpCharacters.add(_mechanicChar);
 		_grpActors.add(_mechanicChar);
@@ -60,8 +55,19 @@ class PlayState extends FlxState
 		_grpCharacters.add(_robotChar);
 		_grpActors.add(_robotChar);
 		
-		_projectileSpawner = new ProjectileSpawner();
-		add(_projectileSpawner);
+		_grpEnemies = new FlxTypedGroup<FlxSprite>();
+		add(_grpEnemies);
+		
+		var testEnemy = new PhysicalEnemy();
+		_grpEnemies.add(testEnemy);
+		_grpActors.add(testEnemy);
+		testEnemy.init(FlxG.width / 2, 0);
+		
+		_grpEnemyProj = new FlxTypedGroup<Projectile>();
+		_grpPlayerProj = new FlxTypedGroup<Projectile>();
+		
+		//_projectileSpawner = new ProjectileSpawner();
+		//add(_projectileSpawner);
 		
 		super.create();
 	}
