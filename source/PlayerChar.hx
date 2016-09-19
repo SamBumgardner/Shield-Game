@@ -10,19 +10,13 @@ import flixel.FlxG;
  * ...
  * @author Samuel Bumgardner
  */
-class PlayerChar extends FlxSprite
+class PlayerChar extends DamageableActor
 {
 	public var speed:Float;
 	
 	public var wallCollidedX:Bool = false;
 	public var wallCollidedY:Bool = false;
-	
-	private var healthState:FSM;
-	private var vulnerable:Bool = true;
-	private var hurtTime:Int;
-	private var recoveryTime:Int;
-	private var injuredColor:Int;
-	
+
 	public var _up:Bool = false;
 	public var _down:Bool = false;
 	public var _left:Bool = false;
@@ -32,7 +26,6 @@ class PlayerChar extends FlxSprite
 	{
 		super(X, Y);
 		collisonXDrag = false;
-		healthState = new FSM(normState);
 	}
 	
 	private function checkInputs():Void{};
@@ -97,64 +90,5 @@ class PlayerChar extends FlxSprite
 		{
 			velocity.set(0, 0);
 		}
-	}
-	
-	private function normTransition():Int
-	{
-		alpha = 1;
-		healthState.activeState = normState;
-		vulnerable = true;
-		return -1;
-	}
-	
-	private function normState():Void
-	{
-		return;
-	}
-	
-	private function hurtTransition():Int
-	{
-		set_color(injuredColor);
-		healthState.activeState = hurtState;
-		healthState.nextTransition = recoveryTransition;
-		vulnerable = false;
-		return hurtTime;
-	}
-	
-	private function hurtState():Void
-	{
-		return;
-	}
-	
-	private function recoveryTransition():Int
-	{
-		set_color(0xffffff);
-		healthState.activeState = recoveryState;
-		healthState.nextTransition = normTransition;
-		vulnerable = false;
-		return recoveryTime;
-	}
-	
-	private function recoveryState():Void
-	{
-		if (healthState.stateTimer % 16 < 8)
-			set_alpha(0);
-		else
-			set_alpha(1);
-	}
-	
-	public function damaged(damage:Float):Void
-	{
-		if (vulnerable == true)
-		{
-			hurt(damage);
-			healthState.transitionStates(hurtTransition);
-		}
-	}
-	
-	public override function update(elapsed:Float):Void
-	{
-		healthState.update();
-		super.update(elapsed);
 	}
 }

@@ -30,6 +30,7 @@ class RobotChar extends PlayerChar
 	private var shieldOffsetX = -64;
 
 	private var brokenSpeed:Int = 50;
+	private var brokenColor:Int = 0x888888;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
@@ -50,7 +51,7 @@ class RobotChar extends PlayerChar
 		health = 100;
 		hurtTime = 4;
 		recoveryTime = 0;
-		injuredColor = 0xaaaaaa;
+		injuredColor = 0x555555;
 		
 		shieldState = new FSM(inactiveShieldState);
 		
@@ -147,6 +148,7 @@ class RobotChar extends PlayerChar
 	{
 		shield.broken();
 		speed = brokenSpeed;
+		adjustColor(brokenColor);
 		shieldState.activeState = brokenShieldState;
 		return -1;
 	}
@@ -157,7 +159,10 @@ class RobotChar extends PlayerChar
 			Math.max(shieldCurrCapacity -= shieldCapacityCooldown, 0);
 		
 		if (shieldCurrCapacity == 0)
+		{
+			adjustColor(brokenColor);
 			shieldState.transitionStates(inactiveTransition);
+		}
 		
 		return;
 	}

@@ -33,7 +33,7 @@ class MechanicChar extends PlayerChar
 		health = 5;
 		hurtTime = 4;
 		recoveryTime = 56;
-		injuredColor = 0xbb0000;
+		injuredColor = 0x44ffff;
 	}
 	
 	private override function checkInputs():Void
