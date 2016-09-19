@@ -29,7 +29,7 @@ class ProjectileSpawner extends FlxSprite
 			ProjectileSpawner.projectilePool = new FlxTypedGroup<Projectile>();
 			for (i in 0...(ProjectileSpawner.startingPoolSize))
 			{
-				var projectile = new Projectile();
+				var projectile = new Projectile(Projectile.EN);
 				projectile.kill();
 				ProjectileSpawner.projectilePool.add(projectile);
 			}

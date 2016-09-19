@@ -48,7 +48,7 @@ class Enemy extends DamageableActor
 	
 	private function fireProjectile(firingAngle:Float, firingSpeed:Float):Void
 	{
-		var newProjectile = projectilePool.recycle(Projectile);
+		var newProjectile = projectilePool.recycle(Projectile); //Need to fix this because projectile now takes an argument.
 		newProjectile.init(getMidpoint().x, getMidpoint().y, firingAngle, firingSpeed);
 		(cast FlxG.state)._grpEnemyProj.add(newProjectile);
 	}
