@@ -37,9 +37,15 @@ class Enemy extends DamageableActor
 	private override function hurtTransition():Int
 	{
 		super.hurtTransition();
-		healthState.nextTransition = normTransition;
 		vulnerable = true;
 		return hurtTime;
+	}
+	
+	private override function recoveryTransition():Int
+	{
+		super.recoveryTransition();
+		vulnerable = true;
+		return recoveryTime;
 	}
 	
 	private function movement():Void

@@ -15,6 +15,7 @@ class DamageableActor extends FlxSprite
 	private var hurtTime:Int;
 	private var recoveryTime:Int;
 	private var injuredColor:Int;
+	private var alreadyHurtColor:Bool;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -43,7 +44,11 @@ class DamageableActor extends FlxSprite
 	
 	private function hurtTransition():Int
 	{
-		adjustColor(injuredColor);
+		if (!alreadyHurtColor)
+		{
+			adjustColor(injuredColor);
+			alreadyHurtColor = true;
+		}
 		healthState.activeState = hurtState;
 		healthState.nextTransition = recoveryTransition;
 		vulnerable = false;
@@ -58,6 +63,7 @@ class DamageableActor extends FlxSprite
 	private function recoveryTransition():Int
 	{
 		adjustColor(injuredColor);
+		alreadyHurtColor = false;
 		healthState.activeState = recoveryState;
 		healthState.nextTransition = normTransition;
 		vulnerable = false;
