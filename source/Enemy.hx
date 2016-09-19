@@ -29,6 +29,17 @@ class Enemy extends DamageableActor
 		injuredColor = 0x333333;
 	}
 	
+	private function initializeProjectilePool(type:Int):Void
+	{
+		for (i in 0...30)
+		{
+			var projectile = new Projectile(type);
+			projectile.kill();
+			projectilePool.add(projectile);
+		}
+		FlxG.state.add(projectilePool);
+	}
+	
 	public function init(X:Float, Y:Float):Void
 	{
 		reset(0, 0);
@@ -68,6 +79,11 @@ class Enemy extends DamageableActor
 	
 	
 	/*============================== Action State Machine ======================================*/
+	
+	private function enterTransition():Int
+	{
+		return -1;
+	}
 	
 	private function enterState():Void
 	{
