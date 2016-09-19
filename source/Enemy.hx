@@ -1,6 +1,9 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 
 /**
@@ -12,14 +15,15 @@ class Enemy extends DamageableActor
 	public var maxSpeed:Float;
 	public var currSpeed:Float;
 	private var movementAngle:Float;
-	private var projectilePool:FlxTypedGroup:Projectile;
+	
+	private var projectilePool:FlxTypedGroup<Projectile>;
 	
 	private var actionState:FSM;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
-		actionState = new FSM(enterState);
+		actionState = new FSM();
 	}
 	
 	public function init(X:Float, Y:Float):Void
@@ -27,7 +31,7 @@ class Enemy extends DamageableActor
 		reset(0, 0);
 		x = X;
 		y = Y;
-		actionState.nextTransition(enterState);
+		actionState.transitionStates(enterTransition);
 	}
 	
 	private override function hurtTransition():Int
