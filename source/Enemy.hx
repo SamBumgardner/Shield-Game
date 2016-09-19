@@ -24,6 +24,9 @@ class Enemy extends DamageableActor
 	{
 		super(X, Y, SimpleGraphic);
 		actionState = new FSM();
+		hurtTime = 4;
+		recoveryTime = 0;
+		injuredColor = 0x333333;
 	}
 	
 	public function init(X:Float, Y:Float):Void
