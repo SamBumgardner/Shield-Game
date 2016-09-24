@@ -24,7 +24,7 @@ class PlayState extends FlxState
 	private var _mechanicChar:MechanicChar;
 	private var _robotChar:RobotChar;
 	
-	private var _projectileSpawner:ProjectileSpawner;
+	private var _enemySpawner:EnemySpawner;
 	
 	public var _grpEnemyProj:FlxTypedGroup<Projectile>; // Pair of groups used for collision purposes.
 	public var _grpPlayerProj:FlxTypedGroup<Projectile>;
@@ -58,16 +58,11 @@ class PlayState extends FlxState
 		_grpEnemies = new FlxTypedGroup<FlxSprite>();
 		add(_grpEnemies);
 		
-		var testEnemy = new PhysicalEnemy();
-		_grpEnemies.add(testEnemy);
-		_grpActors.add(testEnemy);
-		testEnemy.init(FlxG.width / 2, 0);
-		
 		_grpEnemyProj = new FlxTypedGroup<Projectile>();
 		_grpPlayerProj = new FlxTypedGroup<Projectile>();
 		
-		//_projectileSpawner = new ProjectileSpawner();
-		//add(_projectileSpawner);
+		_enemySpawner = new EnemySpawner();
+		add(_enemySpawner);
 		
 		super.create();
 	}
