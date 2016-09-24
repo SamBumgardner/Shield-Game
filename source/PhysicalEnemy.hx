@@ -42,13 +42,20 @@ class PhysicalEnemy extends Enemy
 		health = 30;
 	}
 	
+	private function fireProjectileSpread():Void
+	{
+		fireProjectile(70, 200, Projectile.PHYS);
+		fireProjectile(90, 200, Projectile.PHYS);
+		fireProjectile(110, 200, Projectile.PHYS);
+	}
+	
 	private override function enterTransition():Int
 	{
-		currSpeed = 20;
+		currSpeed = 45;
 		movementAngle = 90;
 		actionState.activeState = enterState;
 		actionState.nextTransition = normMoveTransition;
-		return 30;
+		return 180;
 	}
 	
 	private override function normMoveTransition():Int
@@ -74,9 +81,7 @@ class PhysicalEnemy extends Enemy
 		
 		currSpeed = 0;
 		
-		fireProjectile(70, 200);
-		fireProjectile(90, 200);
-		fireProjectile(110, 200);
+		fireProjectileSpread();
 		
 		actionState.activeState = firingProjState;
 		actionState.nextTransition = normMoveTransition;
