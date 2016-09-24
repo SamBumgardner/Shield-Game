@@ -18,7 +18,7 @@ class PhysicalEnemy extends Enemy
 		super(X, Y, SimpleGraphic);
 		
 		loadGraphic(AssetPaths.physicalEnemy__png, true, 128, 128);
-		setSize(104, 104);
+		setSize(104, 88);
 		offset.set(12, 12);
 		
 		maxSpeed = 100;
@@ -39,7 +39,8 @@ class PhysicalEnemy extends Enemy
 	override public function init(X:Float, Y:Float):Void 
 	{
 		super.init(X, Y);
-		health = 30;
+		health = 3;
+		actionState.activeState = enterTransition;
 	}
 	
 	private function fireProjectileSpread():Void
