@@ -83,8 +83,7 @@ class PhysicalEnemy extends Enemy
 		
 		xSpeed = 0;
 		
-		//fireProjectileSpread();
-		fireProjectile(90, 200, Projectile.PHYS);
+		fireProjectileSpread();
 		
 		actionState.activeState = firingProjState;
 		actionState.nextTransition = normMoveTransition;
