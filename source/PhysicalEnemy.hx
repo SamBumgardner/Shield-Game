@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxAssets.FlxGraphicAsset;
@@ -12,6 +13,9 @@ class PhysicalEnemy extends Enemy
 {
 	
 	private static var physProjectilePool:FlxTypedGroup<Projectile>;
+	
+	private static var maxYSpeed:Float = 60;
+	private static var maxXSpeed:Float = 50;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -52,8 +56,7 @@ class PhysicalEnemy extends Enemy
 	
 	private override function enterTransition():Int
 	{
-		currSpeed = 45;
-		movementAngle = 90;
+		ySpeed = PhysicalEnemy.maxYSpeed;
 		actionState.activeState = enterState;
 		actionState.nextTransition = normMoveTransition;
 		return 180;
@@ -62,11 +65,9 @@ class PhysicalEnemy extends Enemy
 	private override function normMoveTransition():Int
 	{
 		if (facing == FlxObject.RIGHT)
-			movementAngle = 0;
+			xSpeed = PhysicalEnemy.maxXSpeed;
 		else if (facing == FlxObject.LEFT)
-			movementAngle = 180;
-		
-		currSpeed = 50;
+			xSpeed = -PhysicalEnemy.maxXSpeed;
 		
 		actionState.activeState = normMoveState;
 		actionState.nextTransition = firingProjTransition;
@@ -80,9 +81,10 @@ class PhysicalEnemy extends Enemy
 		else if (facing == FlxObject.LEFT)
 			facing = FlxObject.RIGHT;
 		
-		currSpeed = 0;
+		xSpeed = 0;
 		
-		fireProjectileSpread();
+		//fireProjectileSpread();
+		fireProjectile(90, 200, Projectile.PHYS);
 		
 		actionState.activeState = firingProjState;
 		actionState.nextTransition = normMoveTransition;
@@ -91,7 +93,7 @@ class PhysicalEnemy extends Enemy
 	
 	public override function update(elapsed:Float)
 	{
-		movement();
+		componentMovement();
 		super.update(elapsed);
 	}
 }

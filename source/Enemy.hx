@@ -16,6 +16,9 @@ class Enemy extends DamageableActor
 	public var currSpeed:Float;
 	private var movementAngle:Float;
 	
+	public var xSpeed:Float;
+	public var ySpeed:Float;
+	
 	private var projectilePool:FlxTypedGroup<Projectile>;
 	
 	private var actionState:FSM;
@@ -62,10 +65,14 @@ class Enemy extends DamageableActor
 		return recoveryTime;
 	}
 	
-	private function movement():Void
+	private function angledMovement():Void
 	{
 		velocity.set(currSpeed, 0);
 		velocity.rotate(FlxPoint.weak(0, 0), movementAngle);
+	}
+	private function componentMovement():Void
+	{
+		velocity.set(xSpeed, ySpeed);
 	}
 	
 	private function decideDirection():Void{}
