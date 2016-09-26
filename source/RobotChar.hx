@@ -53,6 +53,8 @@ class RobotChar extends PlayerChar
 		recoveryTime = 0;
 		injuredColor = 0x555555;
 		
+		force = 1;
+		
 		shieldState = new FSM(inactiveShieldState);
 		
 		shield = new EnergyShield();

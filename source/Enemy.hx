@@ -19,6 +19,8 @@ class Enemy extends DamageableActor
 	public var xSpeed:Float;
 	public var ySpeed:Float;
 	
+	public var force:Int = 5;
+	
 	private var projectilePool:FlxTypedGroup<Projectile>;
 	
 	private var actionState:FSM;

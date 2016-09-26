@@ -16,6 +16,8 @@ class PlayerChar extends DamageableActor
 	
 	public var wallCollidedX:Bool = false;
 	public var wallCollidedY:Bool = false;
+	
+	public var force:Int;
 
 	public var _up:Bool = false;
 	public var _down:Bool = false;

@@ -83,6 +83,18 @@ class PlayState extends FlxState
 		projectile.shieldCollide();
 		_robotChar.addToCapacity(projectile.force);
 	}
+	
+	private function shieldEnemyCollisions(shield:EnergyShield, enemy:Enemy):Void
+	{
+		_robotChar.addToCapacity(enemy.force);
+	}
+	
+	private function characterEnemyCollisions(character:PlayerChar, enemy:Enemy):Void
+	{
+		character.damaged(enemy.force);
+		enemy.damaged(character.force);
+	}
+	
 
 	private function separateAndRemember(Object1:FlxObject, Object2:FlxObject):Bool
 	{
@@ -160,6 +172,8 @@ class PlayState extends FlxState
 		FlxG.overlap(_robotChar.shield, _grpEnemyProj, shieldProjectileCollisions);
 		FlxG.overlap(_grpCharacters, _grpEnemyProj, deadlyProjectileCollisions);
 		FlxG.overlap(_grpEnemies, _grpPlayerProj, deadlyProjectileCollisions);
+		FlxG.overlap(_grpCharacters, _grpEnemies, characterEnemyCollisions);
+		FlxG.overlap(_robotChar.shield, _grpEnemies, shieldEnemyCollisions);
 		
 		
 		_robotChar.shield.updateProjectiles();
