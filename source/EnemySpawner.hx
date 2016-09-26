@@ -56,6 +56,7 @@ class EnemySpawner extends FlxSprite
 		var newEnemy = enemyPool.recycle(PhysicalEnemy);
 		newEnemy.init(Math.min(Math.max(Math.random() * FlxG.width, enemyXMargin), FlxG.width - enemyXMargin), enemyYOffset);
 		(cast FlxG.state)._grpEnemies.add(newEnemy);
+		(cast FlxG.state)._grpActors.add(newEnemy);
 	}
 	
 	override public function update(elapsed:Float):Void 

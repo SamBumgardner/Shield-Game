@@ -56,7 +56,6 @@ class PlayState extends FlxState
 		_grpActors.add(_robotChar);
 		
 		_grpEnemies = new FlxTypedGroup<FlxSprite>();
-		add(_grpEnemies);
 		
 		_grpEnemyProj = new FlxTypedGroup<Projectile>();
 		_grpPlayerProj = new FlxTypedGroup<Projectile>();
