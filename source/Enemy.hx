@@ -122,8 +122,17 @@ class Enemy extends DamageableActor
 		return;
 	}
 	
+	override public function kill():Void
+	{
+		(cast FlxG.state)._grpEnemies.remove(cast this, true);
+		(cast FlxG.state)._grpActors.remove(cast this, true);
+		super.kill();
+	}
+	
 	public override function update(elapsed:Float)
 	{
+		if (!isOnScreen())
+			kill();
 		actionState.update();
 		super.update(elapsed);
 	}
