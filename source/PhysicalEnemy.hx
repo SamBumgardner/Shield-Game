@@ -22,8 +22,10 @@ class PhysicalEnemy extends Enemy
 		super(X, Y, SimpleGraphic);
 		
 		loadGraphic(AssetPaths.physicalEnemy__png, true, 128, 128);
-		setSize(104, 88);
-		offset.set(12, 12);
+		setSize(104, 64);
+		offset.set(12, 64);
+		
+		animation.add("walk", [0,1,2,3,4,5,6,7,8,9,10,11,10,9,8,7,6,5,4,3,2,1], 15);
 		
 		maxSpeed = 100;
 		facing = FlxObject.RIGHT;
@@ -45,6 +47,7 @@ class PhysicalEnemy extends Enemy
 		super.init(X, Y);
 		health = 3;
 		actionState.activeState = enterTransition;
+		animation.play("walk");
 	}
 	
 	private function fireProjectileSpread():Void

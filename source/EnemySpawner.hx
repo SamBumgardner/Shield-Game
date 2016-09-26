@@ -15,7 +15,7 @@ class EnemySpawner extends FlxSprite
 	private var timerValue:Int = 0;
 	
 	private var enemyXMargin:Int = 300;
-	private var enemyYOffset:Int = -100;
+	private var enemyYOffset:Int = -64;
 	
 	public var enemyPool:FlxTypedGroup<PhysicalEnemy>;
 	private var startingPoolSize:Int = 4;
