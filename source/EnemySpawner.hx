@@ -19,6 +19,7 @@ class EnemySpawner extends FlxSprite
 	
 	public var physEnemyPool:FlxTypedGroup<PhysicalEnemy>;
 	public var bioEnemyPool:FlxTypedGroup<BioEnemy>;
+	public var enEnemyPool:FlxTypedGroup<EnergyEnemy>;
 	private var startingPoolSize:Int = 4;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
@@ -46,6 +47,18 @@ class EnemySpawner extends FlxSprite
 				bioEnemy.kill();
 				bioEnemyPool.add(bioEnemy);
 				(cast FlxG.state)._grpEnemies.add(bioEnemy);
+			}
+		}
+		
+		if (enEnemyPool == null)
+		{
+			enEnemyPool = new FlxTypedGroup<EnergyEnemy>();
+			for (i in 0...(startingPoolSize))
+			{
+				var enEnemy = new EnergyEnemy();
+				enEnemy.kill();
+				enEnemyPool.add(enEnemy);
+				(cast FlxG.state)._grpEnemies.add(enEnemy);
 			}
 		}
 	}
@@ -80,12 +93,21 @@ class EnemySpawner extends FlxSprite
 		(cast FlxG.state)._grpActors.add(newEnemy);
 	}
 	
+	private function spawnEnEnemy():Void
+	{
+		var newEnemy = enEnemyPool.recycle(EnergyEnemy);
+		newEnemy.init(Math.min(Math.max(Math.random() * FlxG.width, enemyXMargin*2), FlxG.width - enemyXMargin*2), enemyYOffset);
+		(cast FlxG.state)._grpEnemies.add(newEnemy);
+		(cast FlxG.state)._grpActors.add(newEnemy);
+	}
+	
 	override public function update(elapsed:Float):Void 
 	{
 		if (checkTimer())
 		{
 			spawnPhysEnemy();
 			spawnBioEnemy();
+			spawnEnEnemy();
 		}
 		super.update(elapsed);
 	}
