@@ -61,7 +61,7 @@ class RobotChar extends PlayerChar
 		FlxG.state.add(shield);
 	}
 	
-	private override function checkInputs():Void
+	override private function checkInputs():Void
 	{
 		_up = FlxG.keys.anyPressed([W]);
 		_down = FlxG.keys.anyPressed([S]);
