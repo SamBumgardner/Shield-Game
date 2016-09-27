@@ -32,8 +32,8 @@ class Projectile extends FlxSprite
 		switch projectileType
 		{
 			case EN:		loadGraphic(AssetPaths.energyBullet__png, true, 32, 32);
-			case PHYS:	loadGraphic(AssetPaths.energyBullet__png, true, 32, 32); // replace this with physical bullet asset when possible
-			case BIO:		loadGraphic(AssetPaths.energyBullet__png, true, 32, 32); // replace this with bio bullet asset when possible.
+			case PHYS:		loadGraphic(AssetPaths.physBullet__png, true, 32, 32); // replace this with physical bullet asset when possible
+			case BIO:		loadGraphic(AssetPaths.bioBullet__png, true, 32, 32); // replace this with bio bullet asset when possible.
 			default: /*Shouldn't happen*/ projectileType;
 		}
 		setSize(16, 16);
