@@ -17,6 +17,8 @@ class PhysicalEnemy extends Enemy
 	private static var maxYSpeed:Float = 60;
 	private static var maxXSpeed:Float = 50;
 	
+	private static var maxHealth:Int = 3;
+	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
@@ -45,7 +47,7 @@ class PhysicalEnemy extends Enemy
 	override public function init(X:Float, Y:Float):Void 
 	{
 		super.init(X, Y);
-		health = 3;
+		health = PhysicalEnemy.maxHealth;
 		actionState.activeState = enterTransition;
 		animation.play("walk");
 	}
