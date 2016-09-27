@@ -17,22 +17,35 @@ class EnemySpawner extends FlxSprite
 	private var enemyXMargin:Int = 300;
 	private var enemyYOffset:Int = -64;
 	
-	public var enemyPool:FlxTypedGroup<PhysicalEnemy>;
+	public var physEnemyPool:FlxTypedGroup<PhysicalEnemy>;
+	public var bioEnemyPool:FlxTypedGroup<BioEnemy>;
 	private var startingPoolSize:Int = 4;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
 		
-		if (enemyPool == null)
+		if (physEnemyPool == null)
 		{
-			enemyPool = new FlxTypedGroup<PhysicalEnemy>();
+			physEnemyPool = new FlxTypedGroup<PhysicalEnemy>();
 			for (i in 0...(startingPoolSize))
 			{
 				var physEnemy = new PhysicalEnemy();
 				physEnemy.kill();
-				enemyPool.add(physEnemy);
+				physEnemyPool.add(physEnemy);
 				(cast FlxG.state)._grpEnemies.add(physEnemy);
+			}
+		}
+		
+		if (bioEnemyPool == null)
+		{
+			bioEnemyPool = new FlxTypedGroup<BioEnemy>();
+			for (i in 0...(startingPoolSize))
+			{
+				var bioEnemy = new BioEnemy();
+				bioEnemy.kill();
+				bioEnemyPool.add(bioEnemy);
+				(cast FlxG.state)._grpEnemies.add(bioEnemy);
 			}
 		}
 	}
@@ -51,9 +64,17 @@ class EnemySpawner extends FlxSprite
 		}
 	}
 	
-	private function spawnEnemy():Void
+	private function spawnPhysEnemy():Void
 	{
-		var newEnemy = enemyPool.recycle(PhysicalEnemy);
+		var newEnemy = physEnemyPool.recycle(PhysicalEnemy);
+		newEnemy.init(Math.min(Math.max(Math.random() * FlxG.width, enemyXMargin), FlxG.width - enemyXMargin), enemyYOffset);
+		(cast FlxG.state)._grpEnemies.add(newEnemy);
+		(cast FlxG.state)._grpActors.add(newEnemy);
+	}
+	
+	private function spawnBioEnemy():Void
+	{
+		var newEnemy = bioEnemyPool.recycle(BioEnemy);
 		newEnemy.init(Math.min(Math.max(Math.random() * FlxG.width, enemyXMargin), FlxG.width - enemyXMargin), enemyYOffset);
 		(cast FlxG.state)._grpEnemies.add(newEnemy);
 		(cast FlxG.state)._grpActors.add(newEnemy);
@@ -63,7 +84,8 @@ class EnemySpawner extends FlxSprite
 	{
 		if (checkTimer())
 		{
-			spawnEnemy();
+			spawnPhysEnemy();
+			spawnBioEnemy();
 		}
 		super.update(elapsed);
 	}
