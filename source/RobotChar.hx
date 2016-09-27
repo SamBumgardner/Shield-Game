@@ -70,6 +70,12 @@ class RobotChar extends PlayerChar
 		spacebar = FlxG.keys.checkStatus(32, PRESSED);
 	}
 	
+	override public function kill():Void
+	{
+		shieldState.transitionStates(brokenTransition);
+		super.kill();
+	}
+	
 	public function addToCapacity(force:Int):Void
 	{
 		shieldCurrCapacity += force;
