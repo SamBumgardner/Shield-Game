@@ -90,7 +90,7 @@ class BioEnemy extends Enemy
 		
 		actionState.activeState = firingProjState;
 		actionState.nextTransition = firingProjTransition;
-		return 30;
+		return 45;
 	}
 	
 	public override function update(elapsed:Float)
