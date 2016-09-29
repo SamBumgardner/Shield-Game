@@ -30,6 +30,8 @@ class EnemySpawner extends FlxSprite
 	{
 		super(X, Y, SimpleGraphic);
 		
+		set_visible(false);
+		
 		if (physEnemyPool == null)
 		{
 			physEnemyPool = new FlxTypedGroup<PhysicalEnemy>();
