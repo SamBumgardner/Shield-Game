@@ -11,8 +11,12 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
  */
 class EnemySpawner extends FlxSprite
 {
-	private var timerLength:Int = 300;
-	private var timerValue:Int = 0;
+	private var physTimerLength:Int = 200;
+	private var physTimerValue:Int = 0;
+	private var bioTimerLength:Int = 400;
+	private var bioTimerValue:Int = 0;
+	private var enTimerLength:Int = 600;
+	private var enTimerValue:Int = 0;
 	
 	private var enemyXMargin:Int = 300;
 	private var enemyYOffset:Int = -64;
@@ -63,18 +67,12 @@ class EnemySpawner extends FlxSprite
 		}
 	}
 	
-	private function checkTimer():Bool
+	private function checkTimer(timerLength:Int, timerValue:Int):Bool
 	{
 		if (timerValue == timerLength)
-		{
-			timerValue = 0;
 			return true;
-		}
 		else
-		{
-			timerValue += 1;
 			return false;
-		}
 	}
 	
 	private function spawnPhysEnemy():Void
@@ -103,12 +101,39 @@ class EnemySpawner extends FlxSprite
 	
 	override public function update(elapsed:Float):Void 
 	{
-		if (checkTimer())
+		if (checkTimer(physTimerLength, physTimerValue))
 		{
 			spawnPhysEnemy();
-			spawnBioEnemy();
-			spawnEnEnemy();
+			physTimerLength = cast Math.max(physTimerLength - 1, 100);
+			physTimerValue = 0;
 		}
+		else
+		{
+			physTimerValue++;
+		}
+		
+		if (checkTimer(bioTimerLength, bioTimerValue))
+		{
+			spawnBioEnemy();
+			bioTimerLength = cast Math.max(bioTimerLength - 1, 100);
+			bioTimerValue = 0;
+		}
+		else
+		{
+			bioTimerValue++;
+		}
+		
+		if (checkTimer(enTimerLength, enTimerValue))
+		{
+			spawnEnEnemy();
+			enTimerLength = cast Math.max(enTimerLength - 1, 100);
+			enTimerValue = 0;
+		}
+		else
+		{
+			enTimerValue++;
+		}
+		
 		super.update(elapsed);
 	}
 	
