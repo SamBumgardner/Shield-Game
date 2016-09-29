@@ -23,6 +23,8 @@ class PlayState extends FlxState
 	private var _grpBoundaries:FlxGroup;
 	private var _mechanicChar:MechanicChar;
 	private var _robotChar:RobotChar;
+	private var _grpUI:FlxTypedGroup<FlxSprite>;
+	private var _capacityBar:UI;
 	
 	private var _enemySpawner:EnemySpawner;
 	
@@ -45,6 +47,9 @@ class PlayState extends FlxState
 		_grpActors = new FlxTypedGroup<FlxSprite>();
 		add(_grpActors);
 		
+		_grpUI = new FlxTypedGroup<FlxSprite>();
+		add(_grpUI);
+		
 		_grpCharacters = new FlxTypedGroup<FlxSprite>();
 		
 		_mechanicChar = new MechanicChar(500, 500);
@@ -62,6 +67,10 @@ class PlayState extends FlxState
 		
 		_enemySpawner = new EnemySpawner();
 		add(_enemySpawner);
+		
+		
+		_capacityBar = new UI(265, 900, _robotChar, "shieldCurrCapacity", cast _robotChar.shieldMaxCapacity);
+		_grpUI.add(_capacityBar);
 		
 		super.create();
 	}
