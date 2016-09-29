@@ -64,7 +64,7 @@ class PhysicalEnemy extends Enemy
 		ySpeed = PhysicalEnemy.maxYSpeed;
 		actionState.activeState = enterState;
 		actionState.nextTransition = normMoveTransition;
-		return 180;
+		return 30;
 	}
 	
 	private override function normMoveTransition():Int
@@ -76,7 +76,7 @@ class PhysicalEnemy extends Enemy
 		
 		actionState.activeState = normMoveState;
 		actionState.nextTransition = firingProjTransition;
-		return 300;
+		return 180;
 	}
 	
 	private override function firingProjTransition():Int
