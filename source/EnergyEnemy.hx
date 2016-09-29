@@ -70,7 +70,7 @@ class EnergyEnemy extends Enemy
 		
 		actionState.activeState = normMoveState;
 		actionState.nextTransition = firingProjTransition;
-		return 40;
+		return 90;
 	}
 	
 	private override function firingProjTransition():Int
