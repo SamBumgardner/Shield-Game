@@ -17,9 +17,9 @@ class RobotChar extends PlayerChar
 	
 	private var shieldActiveSpeed:Int = 100;
 	private var shieldInactiveSpeed:Int = 160;
-	private var shieldMaxCapacity:Int = 1000;
-	private var shieldCurrCapacity:Int = 0;
-	private var shieldCapacityCooldown:Int = 5;
+	public var shieldMaxCapacity:Int = 1000;
+	public var shieldCurrCapacity:Int = 0;
+	private var shieldCapacityCooldown:Int = 2;
 	private var shieldRaiseDelay:Int = 30;
 	private var shieldDropDelay:Int = 30;
 	
@@ -165,6 +165,8 @@ class RobotChar extends PlayerChar
 	{
 		if (shieldCurrCapacity > 0)
 			Math.max(shieldCurrCapacity -= shieldCapacityCooldown, 0);
+		
+		trace(shieldCurrCapacity);
 		
 		if (shieldCurrCapacity == 0)
 		{

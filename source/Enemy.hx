@@ -19,7 +19,7 @@ class Enemy extends DamageableActor
 	public var xSpeed:Float;
 	public var ySpeed:Float;
 	
-	public var force:Int = 5;
+	public var force:Int = 2;
 	
 	private var projectilePool:FlxTypedGroup<Projectile>;
 	
