@@ -1,7 +1,9 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 
 /**
@@ -80,7 +82,11 @@ class EnergyEnemy extends Enemy
 		
 		xSpeed = 0;
 		
-		fireProjectile(90, 200, Projectile.EN);
+		var angleToPlayer:Float = getMidpoint().angleBetween(
+			FlxPoint.weak((cast FlxG.state)._mechanicChar.x, (cast FlxG.state)._mechanicChar.y)) - 90;
+		
+		fireProjectile(angleToPlayer - 5, 200, Projectile.EN);
+		fireProjectile(angleToPlayer + 5, 200, Projectile.EN);
 		
 		actionState.activeState = firingProjState;
 		actionState.nextTransition = normMoveTransition;
