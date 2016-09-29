@@ -62,7 +62,7 @@ class EnergyShield extends FlxSprite
 	public function fireProjectile(proj:Projectile):Void
 	{
 		proj.currentlyCaught = false;
-		proj.velocity.set(0, -200);
+		proj.velocity.set(0, -300);
 		var angle = 0.0;
 		
 		if ((cast FlxG.state)._robotChar._left)

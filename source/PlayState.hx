@@ -24,7 +24,7 @@ class PlayState extends FlxState
 	private var _mechanicChar:MechanicChar;
 	private var _robotChar:RobotChar;
 	
-	private var _projectileSpawner:ProjectileSpawner;
+	private var _enemySpawner:EnemySpawner;
 	
 	public var _grpEnemyProj:FlxTypedGroup<Projectile>; // Pair of groups used for collision purposes.
 	public var _grpPlayerProj:FlxTypedGroup<Projectile>;
@@ -47,11 +47,6 @@ class PlayState extends FlxState
 		
 		_grpCharacters = new FlxTypedGroup<FlxSprite>();
 		
-		_grpEnemies = new FlxTypedGroup<FlxSprite>();
-		
-		_grpEnemyProj = new FlxTypedGroup<Projectile>();
-		_grpPlayerProj = new FlxTypedGroup<Projectile>();
-		
 		_mechanicChar = new MechanicChar(500, 500);
 		_grpCharacters.add(_mechanicChar);
 		_grpActors.add(_mechanicChar);
@@ -60,8 +55,13 @@ class PlayState extends FlxState
 		_grpCharacters.add(_robotChar);
 		_grpActors.add(_robotChar);
 		
-		_projectileSpawner = new ProjectileSpawner();
-		add(_projectileSpawner);
+		_grpEnemies = new FlxTypedGroup<FlxSprite>();
+		
+		_grpEnemyProj = new FlxTypedGroup<Projectile>();
+		_grpPlayerProj = new FlxTypedGroup<Projectile>();
+		
+		_enemySpawner = new EnemySpawner();
+		add(_enemySpawner);
 		
 		super.create();
 	}
@@ -83,6 +83,18 @@ class PlayState extends FlxState
 		projectile.shieldCollide();
 		_robotChar.addToCapacity(projectile.force);
 	}
+	
+	private function shieldEnemyCollisions(shield:EnergyShield, enemy:Enemy):Void
+	{
+		_robotChar.addToCapacity(enemy.force);
+	}
+	
+	private function characterEnemyCollisions(character:PlayerChar, enemy:Enemy):Void
+	{
+		character.damaged(enemy.force);
+		enemy.damaged(character.force);
+	}
+	
 
 	private function separateAndRemember(Object1:FlxObject, Object2:FlxObject):Bool
 	{
@@ -160,6 +172,8 @@ class PlayState extends FlxState
 		FlxG.overlap(_robotChar.shield, _grpEnemyProj, shieldProjectileCollisions);
 		FlxG.overlap(_grpCharacters, _grpEnemyProj, deadlyProjectileCollisions);
 		FlxG.overlap(_grpEnemies, _grpPlayerProj, deadlyProjectileCollisions);
+		FlxG.overlap(_grpCharacters, _grpEnemies, characterEnemyCollisions);
+		FlxG.overlap(_robotChar.shield, _grpEnemies, shieldEnemyCollisions);
 		
 		
 		_robotChar.shield.updateProjectiles();

@@ -30,6 +30,7 @@ class RobotChar extends PlayerChar
 	private var shieldOffsetX = -64;
 
 	private var brokenSpeed:Int = 50;
+	private var brokenColor:Int = 0x888888;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
@@ -50,7 +51,9 @@ class RobotChar extends PlayerChar
 		health = 100;
 		hurtTime = 4;
 		recoveryTime = 0;
-		injuredColor = 0xaaaaaa;
+		injuredColor = 0x555555;
+		
+		force = 1;
 		
 		shieldState = new FSM(inactiveShieldState);
 		
@@ -58,13 +61,19 @@ class RobotChar extends PlayerChar
 		FlxG.state.add(shield);
 	}
 	
-	private override function checkInputs():Void
+	override private function checkInputs():Void
 	{
 		_up = FlxG.keys.anyPressed([W]);
 		_down = FlxG.keys.anyPressed([S]);
 		_left = FlxG.keys.anyPressed([A]);
 		_right = FlxG.keys.anyPressed([D]);
 		spacebar = FlxG.keys.checkStatus(32, PRESSED);
+	}
+	
+	override public function kill():Void
+	{
+		shieldState.transitionStates(brokenTransition);
+		super.kill();
 	}
 	
 	public function addToCapacity(force:Int):Void
@@ -147,6 +156,7 @@ class RobotChar extends PlayerChar
 	{
 		shield.broken();
 		speed = brokenSpeed;
+		adjustColor(brokenColor);
 		shieldState.activeState = brokenShieldState;
 		return -1;
 	}
@@ -157,7 +167,10 @@ class RobotChar extends PlayerChar
 			Math.max(shieldCurrCapacity -= shieldCapacityCooldown, 0);
 		
 		if (shieldCurrCapacity == 0)
+		{
+			adjustColor(brokenColor);
 			shieldState.transitionStates(inactiveTransition);
+		}
 		
 		return;
 	}

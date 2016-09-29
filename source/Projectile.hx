@@ -19,13 +19,23 @@ class Projectile extends FlxSprite
 	private var projectileGroup:Int = 0; // 0 = no group, 1 = enemy, 2 = player
 	public var currentlyCaught:Bool = false;
 	
+	public static inline var EN:Int = 0x00;
+	public static inline var PHYS:Int = 0x01;
+	public static inline var BIO:Int = 0x10;
+	
 	//public var groupID:FlxBasic;
 	
-	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
+	public function new(projectileType:Int) 
 	{
 		super();
 		
-		loadGraphic(AssetPaths.energyBullet__png, true, 32, 32);
+		switch projectileType
+		{
+			case EN:		loadGraphic(AssetPaths.energyBullet__png, true, 32, 32);
+			case PHYS:		loadGraphic(AssetPaths.physBullet__png, true, 32, 32); // replace this with physical bullet asset when possible
+			case BIO:		loadGraphic(AssetPaths.bioBullet__png, true, 32, 32); // replace this with bio bullet asset when possible.
+			default: /*Shouldn't happen*/ projectileType;
+		}
 		setSize(16, 16);
 		offset.set(8, 8);
 		
