@@ -17,7 +17,7 @@ class PhysicalEnemy extends Enemy
 	private static var maxYSpeed:Float = 60;
 	private static var maxXSpeed:Float = 50;
 	
-	private static var maxHealth:Int = 3;
+	private static var maxHealth:Int = 5;
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
