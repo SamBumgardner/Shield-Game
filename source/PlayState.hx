@@ -24,7 +24,7 @@ class PlayState extends FlxState
 	private var _mechanicChar:MechanicChar;
 	private var _robotChar:RobotChar;
 	private var _grpUI:FlxTypedGroup<FlxSprite>;
-	private var _capacityBar:UI;
+	private var _UiManager:UI;
 	
 	private var _enemySpawner:EnemySpawner;
 	
@@ -69,8 +69,8 @@ class PlayState extends FlxState
 		add(_enemySpawner);
 		
 		
-		_capacityBar = new UI(265, 900, _robotChar, "shieldCurrCapacity", cast _robotChar.shieldMaxCapacity);
-		_grpUI.add(_capacityBar);
+		_UiManager = new UI(_robotChar, _mechanicChar);
+		add(_UiManager._uiBarSprites);
 		
 		super.create();
 	}
