@@ -166,8 +166,6 @@ class RobotChar extends PlayerChar
 		if (shieldCurrCapacity > 0)
 			Math.max(shieldCurrCapacity -= shieldCapacityCooldown, 0);
 		
-		trace(shieldCurrCapacity);
-		
 		if (shieldCurrCapacity == 0)
 		{
 			adjustColor(brokenColor);
