@@ -18,6 +18,7 @@ class UI
 {
 	public var uiInitialMenu:FlxTypedGroup<FlxText>;
 	public var uiBarSprites:FlxTypedGroup<FlxSprite>;
+	public var uiGameOver:FlxTypedGroup<FlxText>;
 	
 	private var _capacityBg:FlxSprite;
 	private var _capacityBar:FlxBar;
@@ -38,12 +39,15 @@ class UI
 	{
 		uiInitialMenu = new FlxTypedGroup<FlxText>();
 		uiBarSprites = new FlxTypedGroup<FlxSprite>();
+		uiGameOver = new FlxTypedGroup<FlxText>();
 		
 		setUpInitialMenu(robot, mechanic);
 		
 		setUpCapacityBar(robot, 265, 900);
 		setUpMechHealth(mechanic, 35, 900);
 		setUpRoboHealth(robot, 1050, 900);
+		
+		setUpGameOver();
 	}
 	
 	public function setUpInitialMenu(robot:RobotChar, mechanic:MechanicChar):Void
@@ -166,5 +170,16 @@ class UI
 		_robotHealthBarText = new FlxText(0, Y - 32, 0, "Robot Health", 16);
 		_robotHealthBarText.x = X + 100 - _robotHealthBarText.width / 2;
 		uiBarSprites.add(_robotHealthBarText);
+	}
+	
+	public function setUpGameOver():Void
+	{
+		var gameOverText = new FlxText(0, 450, 0, "GAME OVER", 72);
+		gameOverText.x = FlxG.width / 2 - gameOverText.width / 2;
+		uiGameOver.add(gameOverText);
+		
+		var restartText = new FlxText(0, 550, 0, "Press 'R' to restart.", 12);
+		restartText.x = FlxG.width / 2 - restartText.width / 2;
+		uiGameOver.add(restartText);
 	}
 }

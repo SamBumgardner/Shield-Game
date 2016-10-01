@@ -52,6 +52,12 @@ class MechanicChar extends PlayerChar
 		super.damaged(maxTakeDamage);
 	}
 	
+	override public function kill():Void
+	{
+		(cast FlxG.state).gameOver();
+		super.kill();
+	}
+	
 	override public function update(elapsed:Float):Void 
 	{
 		movement();

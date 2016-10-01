@@ -5,6 +5,8 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.display.FlxBackdrop;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.transition.TransitionData;
 import flixel.group.FlxGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
@@ -12,9 +14,10 @@ import flixel.tile.FlxTileblock;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import flixel.util.FlxCollision;
+import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 
-class PlayState extends FlxState
+class PlayState extends FlxTransitionableState
 {
 	private var _backdrop:FlxBackdrop;
 	private var _grpCharacters:FlxTypedGroup<FlxSprite>; //Used for player-specific collisions.
@@ -31,6 +34,7 @@ class PlayState extends FlxState
 	public var _grpPlayerProj:FlxTypedGroup<Projectile>;
 	
 	private var _gameStarted:Bool = false;
+	private var _gameIsOver:Bool = false;
 	
 	override public function create():Void
 	{
@@ -79,6 +83,17 @@ class PlayState extends FlxState
 	{
 		_UiManager.hideInitialMenu();
 		add(_enemySpawner);
+	}
+	
+	public function gameOver()
+	{
+		FlxG.camera.flash(FlxColor.WHITE, .2);
+		FlxG.camera.shake(0.01, 0.2);
+		add(_UiManager.uiGameOver);
+		
+		Enemy.gameOverProjCleanup();
+
+		_gameIsOver = true;
 	}
 	
 	private function sortByOffsetY(Order:Int, Obj1:FlxObject, Obj2:FlxObject):Int
@@ -189,12 +204,12 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		
 		if (!_gameStarted)
-		{
 			if (FlxG.keys.anyPressed([W, A, S, D, UP, DOWN, LEFT, RIGHT, SPACE]))
-			{
 				startGame();
-			}
-		}
+		
+		if (_gameIsOver)
+			if (FlxG.keys.anyPressed([R]))
+				FlxG.resetState();
 		
 		_robotChar.immovable = true; //prevents mechanic from pushing robot around.
 		FlxG.collide(_robotChar, _mechanicChar);

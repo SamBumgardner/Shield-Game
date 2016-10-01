@@ -10,7 +10,7 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
  */
 class BioEnemy extends Enemy
 {
-	private static var bioProjectilePool:FlxTypedGroup<Projectile>;
+	public static var bioProjectilePool:FlxTypedGroup<Projectile>;
 	
 	private static var maxYSpeed:Float = 80;
 	private static var maxXSpeed:Float = 20;

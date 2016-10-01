@@ -34,6 +34,13 @@ class Enemy extends DamageableActor
 		injuredColor = 0x333333;
 	}
 	
+	public static function gameOverProjCleanup():Void
+	{
+		PhysicalEnemy.physProjectilePool = null;
+		BioEnemy.bioProjectilePool = null;
+		EnergyEnemy.enProjectilePool = null;
+	}
+	
 	private function initializeProjectilePool(type:Int):Void
 	{
 		for (i in 0...30)
