@@ -88,8 +88,12 @@ class PlayState extends FlxState
 	
 	private function deadlyProjectileCollisions(actor:Dynamic, projectile:Projectile):Void
 	{
-		actor.damaged(projectile.damage);
-		projectile.deadlyCollide();
+		if(!actor.isDead)
+		{
+			actor.damaged(projectile.damage);
+			projectile.deadlyCollide();
+		}
+		
 	}
 	
 	private function shieldProjectileCollisions(shield:EnergyShield, projectile:Projectile):Void
@@ -106,23 +110,32 @@ class PlayState extends FlxState
 	
 	private function characterEnemyCollisions(character:PlayerChar, enemy:Enemy):Void
 	{
-		character.damaged(enemy.force);
-		enemy.damaged(character.force);
+		if (!character.isDead)
+		{
+			character.damaged(enemy.force);
+			enemy.damaged(character.force);
+		}
+		
 	}
 	
 
 	private function separateAndRemember(Object1:FlxObject, Object2:FlxObject):Bool
 	{
-		var separatedX:Bool = FlxObject.separateX(Object1, Object2);
-		var separatedY:Bool = FlxObject.separateY(Object1, Object2);
-		
-		//The following casts assume that object2 will be an instance of PlayerChar
-		if(separatedX)
-			(cast Object2).wallCollideX = separatedX;
-		if(separatedY)
-			(cast Object2).wallCollideY = separatedY;
-		
-		return separatedX || separatedY;
+		if (!(cast Object2).isDead)
+		{
+			var separatedX:Bool = FlxObject.separateX(Object1, Object2);
+			var separatedY:Bool = FlxObject.separateY(Object1, Object2);
+			
+			//The following casts assume that object2 will be an instance of PlayerChar
+			if(separatedX)
+				(cast Object2).wallCollideX = separatedX;
+			if(separatedY)
+				(cast Object2).wallCollideY = separatedY;
+			
+			return separatedX || separatedY;
+		}
+		else
+			return false;
 	}
 	
 	private function conditionalSeparate(Object1:FlxObject, Object2:FlxObject):Bool
