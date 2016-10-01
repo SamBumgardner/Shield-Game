@@ -14,7 +14,8 @@ import flixel.util.FlxColor;
  */
 class UI
 {
-	public var _uiBarSprites:FlxTypedGroup<FlxSprite>;
+	public var uiInitialMenu:FlxTypedGroup<FlxText>;
+	public var uiBarSprites:FlxTypedGroup<FlxSprite>;
 	
 	private var _capacityBg:FlxSprite;
 	private var _capacityBar:FlxBar;
@@ -33,31 +34,83 @@ class UI
 	
 	public function new(robot:RobotChar, mechanic:MechanicChar) 
 	{
-		_uiBarSprites = new FlxTypedGroup<FlxSprite>();
+		uiInitialMenu = new FlxTypedGroup<FlxText>();
+		uiBarSprites = new FlxTypedGroup<FlxSprite>();
+		
+		setUpInitialMenu(robot, mechanic);
 		
 		setUpCapacityBar(robot, 265, 900);
 		setUpMechHealth(mechanic, 35, 900);
 		setUpRoboHealth(robot, 1050, 900);
 	}
 	
+	public function setUpInitialMenu(robot:RobotChar, mechanic:MechanicChar):Void
+	{
+		var titleText = new FlxText(0, 36, 0, "SHIELD GAME", 48);
+		titleText.x = FlxG.width / 2 - titleText.width / 2;
+		uiInitialMenu.add(titleText);
+		
+		var byLine = new FlxText(0, 98, 0, "by Alex Mullins and Sam Bumgardner", 12);
+		byLine.x = FlxG.width / 2 - byLine.width / 2;
+		uiInitialMenu.add(byLine);
+		
+		
+		var center = mechanic.getMidpoint();
+		
+		var up  	= new FlxText(center.x, center.y - 80, "UP", 18);
+		var down 	= new FlxText(center.x, center.y + 64, "DOWN", 18);
+		var left	= new FlxText(center.x - 48, center.y, "LEFT", 18);
+		var right	= new FlxText(center.x + 48, center.y, "RIGHT", 18);
+		
+		up.x	-= up.width / 2;
+		down.x 	-= down.width / 2;
+		left.x 	-= left.width;
+		
+		uiInitialMenu.add(up);
+		uiInitialMenu.add(down);
+		uiInitialMenu.add(left);
+		uiInitialMenu.add(right);
+		
+		
+		center = robot.getMidpoint();
+		
+		up  	= new FlxText(center.x, center.y - 96, "W", 18);
+		down 	= new FlxText(center.x, center.y + 80, "S", 18);
+		left	= new FlxText(center.x - 80, center.y, "A", 18);
+		right	= new FlxText(center.x + 80, center.y, "D", 18);
+		var space = new FlxText(center.x, center.y - 144, "SPACE", 32);
+		space.color = FlxColor.CYAN;
+		
+		up.x	-= up.width / 2;
+		down.x 	-= down.width / 2;
+		left.x 	-= left.width;
+		space.x	-= space.width / 2;
+		
+		uiInitialMenu.add(up);
+		uiInitialMenu.add(down);
+		uiInitialMenu.add(left);
+		uiInitialMenu.add(right);
+		uiInitialMenu.add(space);
+	}
+	
 	private function setUpCapacityBar(robot:RobotChar, X:Int, Y:Int):Void
 	{
 		_capacityBg = new FlxSprite(X-3, Y, AssetPaths.capacity_bg__png);
 		_capacityBg.alpha = .5;
-		_uiBarSprites.add(_capacityBg);
+		uiBarSprites.add(_capacityBg);
 		
 		_capacityFg = new FlxSprite(X, Y, AssetPaths.capacity_fg__png);
 		
 		_capacityBar = new FlxBar(X, Y, LEFT_TO_RIGHT, 750, 50, robot, "shieldCurrCapacity", 0, robot.shieldMaxCapacity);
 		_capacityBar.createGradientBar([], [0xccff0000, 0xcc00ffff]); 
 		_capacityBar.numDivisions = 500;
-		_uiBarSprites.add(_capacityBar);
+		uiBarSprites.add(_capacityBar);
 		
-		_uiBarSprites.add(_capacityFg);
+		uiBarSprites.add(_capacityFg);
 		
 		_capacityBarText = new FlxText(0, Y - 32, 0, "Shield Capacity", 16);
 		_capacityBarText.x = X + 375 - _capacityBarText.width / 2;
-		_uiBarSprites.add(_capacityBarText);
+		uiBarSprites.add(_capacityBarText);
 	}
 	
 	private function setUpMechHealth(mechanic:MechanicChar, X:Int, Y:Int):Void
@@ -65,39 +118,39 @@ class UI
 		
 		_mechHealthBg = new FlxSprite(X-3, Y, AssetPaths.health_bg__png);
 		_mechHealthBg.alpha = .5;
-		_uiBarSprites.add(_mechHealthBg);
+		uiBarSprites.add(_mechHealthBg);
 		
 		_mechHealthFg = new FlxSprite(X, Y, AssetPaths.health_fg__png);
 		
 		_mechHealthBar = new FlxBar(X, Y, LEFT_TO_RIGHT, 200, 50, mechanic, "health", 0, 5);
 		_mechHealthBar.createGradientBar([], [0xcc88ff88, 0xcc00ff00]); 
 		_mechHealthBar.numDivisions = 5;
-		_uiBarSprites.add(_mechHealthBar);
+		uiBarSprites.add(_mechHealthBar);
 		
-		_uiBarSprites.add(_mechHealthFg);
+		uiBarSprites.add(_mechHealthFg);
 		
 		_mechHealthBarText = new FlxText(0, Y - 32, 0, "Mechanic Health", 16);
 		_mechHealthBarText.x = X + 100 - _mechHealthBarText.width / 2;
-		_uiBarSprites.add(_mechHealthBarText);
+		uiBarSprites.add(_mechHealthBarText);
 	}
 	
 	private function setUpRoboHealth(robot:RobotChar, X:Int, Y:Int):Void
 	{
 		_robotHealthBg = new FlxSprite(X-3, Y, AssetPaths.health_bg__png);
 		_robotHealthBg.alpha = .5;
-		_uiBarSprites.add(_robotHealthBg);
+		uiBarSprites.add(_robotHealthBg);
 		
 		_robotHealthFg = new FlxSprite(X, Y, AssetPaths.health_fg__png);
 		
 		_robotHealthBar = new FlxBar(X, Y, LEFT_TO_RIGHT, 200, 50, robot, "health", 0, 100);
 		_robotHealthBar.createGradientBar([], [0xcc88ff88, 0xcc00ff00]); 
 		_robotHealthBar.numDivisions = 100;
-		_uiBarSprites.add(_robotHealthBar);
+		uiBarSprites.add(_robotHealthBar);
 		
-		_uiBarSprites.add(_robotHealthFg);
+		uiBarSprites.add(_robotHealthFg);
 		
 		_robotHealthBarText = new FlxText(0, Y - 32, 0, "Robot Health", 16);
 		_robotHealthBarText.x = X + 100 - _robotHealthBarText.width / 2;
-		_uiBarSprites.add(_robotHealthBarText);
+		uiBarSprites.add(_robotHealthBarText);
 	}
 }
