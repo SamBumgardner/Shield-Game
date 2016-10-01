@@ -101,7 +101,7 @@ class UI
 		{
 			var y = text.y;
 			var kill = function(_){text.kill(); };
-			FlxTween.tween(text, {alpha: 0, y: y - 4}, .8, {onComplete:kill}); 	
+			FlxTween.tween(text, {alpha: 0, y: y - 4}, .3, {onComplete:kill}); 	
 		};
 		
 		uiInitialMenu.forEach(exitAnim);
