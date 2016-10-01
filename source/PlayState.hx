@@ -25,11 +25,12 @@ class PlayState extends FlxState
 	private var _robotChar:RobotChar;
 	private var _grpUI:FlxTypedGroup<FlxSprite>;
 	private var _UiManager:UI;
-	
 	private var _enemySpawner:EnemySpawner;
 	
 	public var _grpEnemyProj:FlxTypedGroup<Projectile>; // Pair of groups used for collision purposes.
 	public var _grpPlayerProj:FlxTypedGroup<Projectile>;
+	
+	private var _gameStarted:Bool = false;
 	
 	override public function create():Void
 	{
@@ -52,11 +53,11 @@ class PlayState extends FlxState
 		
 		_grpCharacters = new FlxTypedGroup<FlxSprite>();
 		
-		_mechanicChar = new MechanicChar(500, 500);
+		_mechanicChar = new MechanicChar(FlxG.width * 3/4 - 48, 548);
 		_grpCharacters.add(_mechanicChar);
 		_grpActors.add(_mechanicChar);
 		
-		_robotChar = new RobotChar(500, 500);
+		_robotChar = new RobotChar(FlxG.width / 4, 500);
 		_grpCharacters.add(_robotChar);
 		_grpActors.add(_robotChar);
 		
@@ -65,14 +66,19 @@ class PlayState extends FlxState
 		_grpEnemyProj = new FlxTypedGroup<Projectile>();
 		_grpPlayerProj = new FlxTypedGroup<Projectile>();
 		
-		_enemySpawner = new EnemySpawner();
-		add(_enemySpawner);
-		
+		_enemySpawner = new EnemySpawner();		
 		
 		_UiManager = new UI(_robotChar, _mechanicChar);
-		add(_UiManager._uiBarSprites);
+		add(_UiManager.uiInitialMenu);
+		add(_UiManager.uiBarSprites);
 		
 		super.create();
+	}
+	
+	private function startGame()
+	{
+		_UiManager.hideInitialMenu();
+		add(_enemySpawner);
 	}
 	
 	private function sortByOffsetY(Order:Int, Obj1:FlxObject, Obj2:FlxObject):Int
@@ -168,6 +174,14 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+		
+		if (!_gameStarted)
+		{
+			if (FlxG.keys.anyPressed([W, A, S, D, UP, DOWN, LEFT, RIGHT, SPACE]))
+			{
+				startGame();
+			}
+		}
 		
 		_robotChar.immovable = true; //prevents mechanic from pushing robot around.
 		FlxG.collide(_robotChar, _mechanicChar);

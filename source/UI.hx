@@ -5,6 +5,8 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 
@@ -91,6 +93,18 @@ class UI
 		uiInitialMenu.add(left);
 		uiInitialMenu.add(right);
 		uiInitialMenu.add(space);
+	}
+	
+	public function hideInitialMenu():Void
+	{
+		var exitAnim = function(text:FlxText) 
+		{
+			var y = text.y;
+			var kill = function(_){text.kill(); };
+			FlxTween.tween(text, {alpha: 0, y: y - 4}, .8, {onComplete:kill}); 	
+		};
+		
+		uiInitialMenu.forEach(exitAnim);
 	}
 	
 	private function setUpCapacityBar(robot:RobotChar, X:Int, Y:Int):Void
