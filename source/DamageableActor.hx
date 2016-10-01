@@ -84,8 +84,8 @@ class DamageableActor extends FlxSprite
 	{
 		if (vulnerable == true)
 		{
-			hurt(damage);
 			healthState.transitionStates(hurtTransition);
+			hurt(damage);
 		}
 	}
 	
