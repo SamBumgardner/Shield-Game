@@ -95,7 +95,6 @@ class RobotChar extends PlayerChar
 	private function deadState():Void
 	{
 		velocity.set(0, deadSpeed);
-		trace(velocity);
 		return;
 	}
 	
@@ -197,6 +196,7 @@ class RobotChar extends PlayerChar
 	{
 		if (!isDead)
 		{
+			checkInputs();
 			movement();
 			shieldState.update();
 			shield.updatePosition(elapsed, x - offset.x + shieldOffsetX, y - offset.y + shieldOffsetY);

@@ -60,6 +60,7 @@ class MechanicChar extends PlayerChar
 	
 	override public function update(elapsed:Float):Void 
 	{
+		checkInputs();
 		movement();
 		super.update(elapsed);
 	}
