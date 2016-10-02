@@ -135,6 +135,11 @@ class Enemy extends DamageableActor
 	{
 		(cast FlxG.state)._grpEnemies.remove(cast this, true);
 		(cast FlxG.state)._grpActors.remove(cast this, true);
+		if (health <= 0)
+		{
+			(cast FlxG.state).increaseMultiplier();
+			(cast FlxG.state).increaseScore(75);
+		}
 		super.kill();
 	}
 	

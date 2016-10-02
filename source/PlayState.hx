@@ -33,6 +33,14 @@ class PlayState extends FlxTransitionableState
 	public var _grpEnemyProj:FlxTypedGroup<Projectile>; // Pair of groups used for collision purposes.
 	public var _grpPlayerProj:FlxTypedGroup<Projectile>;
 	
+	public var playerScore:Int = 0;
+	private var _incScoreTimer:Int = 15;
+	private var _maxScoreTimer:Int = 15;
+	public var scoreMultiplier:Int = 1;
+	public var scoreState:FSM;
+	private var _scoreText:FlxText;
+	private var _multText:FlxText;
+	
 	private var _gameStarted:Bool = false;
 	private var _gameIsOver:Bool = false;
 	
@@ -76,12 +84,19 @@ class PlayState extends FlxTransitionableState
 		add(_UiManager.uiInitialMenu);
 		add(_UiManager.uiBarSprites);
 		
+		_scoreText = _UiManager.makeScore();
+		add(_scoreText);
+		_multText = _UiManager.makeMult();
+		add(_multText);
+		scoreState = new FSM(normScoreState);
+		
 		super.create();
 	}
 	
 	private function startGame()
 	{
 		_UiManager.hideInitialMenu();
+		_gameStarted = true;
 		add(_enemySpawner);
 	}
 	
@@ -94,6 +109,34 @@ class PlayState extends FlxTransitionableState
 		Enemy.gameOverProjCleanup();
 
 		_gameIsOver = true;
+	}
+	
+	public function increaseScore(points:Int):Void
+	{
+		playerScore += points * scoreMultiplier;
+	}
+	
+	public function increaseMultiplier():Void
+	{
+		scoreState.transitionStates(increaseMultiplierTransition);
+	}
+	
+	public function increaseMultiplierTransition():Int
+	{
+		scoreMultiplier++;
+		scoreState.nextTransition = multiplierInactiveTransition;
+		return 240;
+	}
+	
+	public function multiplierInactiveTransition():Int
+	{
+		scoreMultiplier = 1;
+		return -1;
+	}
+	
+	public function normScoreState():Void
+	{
+		return;
 	}
 	
 	private function sortByOffsetY(Order:Int, Obj1:FlxObject, Obj2:FlxObject):Int
@@ -129,6 +172,7 @@ class PlayState extends FlxTransitionableState
 		{
 			character.damaged(enemy.force);
 			enemy.damaged(character.force);
+			scoreState.transitionStates(multiplierInactiveTransition);
 		}
 		
 	}
@@ -204,12 +248,24 @@ class PlayState extends FlxTransitionableState
 		super.update(elapsed);
 		
 		if (!_gameStarted)
+		{
 			if (FlxG.keys.anyPressed([W, A, S, D, UP, DOWN, LEFT, RIGHT, SPACE]))
 				startGame();
-		
-		if (_gameIsOver)
+		}
+		else if (_gameIsOver)
+		{
 			if (FlxG.keys.anyPressed([R]))
+			{
 				FlxG.resetState();
+			}
+		}
+		else if (_incScoreTimer == 0)
+		{
+			increaseScore(10);
+			_incScoreTimer = _maxScoreTimer;
+		}
+		else
+			_incScoreTimer--;
 		
 		_robotChar.immovable = true; //prevents mechanic from pushing robot around.
 		FlxG.collide(_robotChar, _mechanicChar);
@@ -230,5 +286,9 @@ class PlayState extends FlxTransitionableState
 		_robotChar.shield.updateProjectiles();
 		
 		_grpActors.sort(sortByOffsetY, FlxSort.ASCENDING);
+		
+		scoreState.update();
+		_scoreText.text = Std.string(playerScore);
+		_multText.text = "x" + Std.string(scoreMultiplier);
 	}
 }

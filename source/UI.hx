@@ -182,4 +182,21 @@ class UI
 		restartText.x = FlxG.width / 2 - restartText.width / 2;
 		uiGameOver.add(restartText);
 	}
+	
+	public function makeScore():FlxText
+	{
+		var scoreText = new FlxText(0, 24, 1200, "0", 24);
+		scoreText.alignment = RIGHT;
+		scoreText.x = FlxG.width / 2 - scoreText.width / 2;
+		return scoreText;
+	}
+	
+	public function makeMult():FlxText
+	{
+		var multText = new FlxText(0, 52, 1200, "x1", 18);
+		multText.alignment = RIGHT;
+		multText.color = 0xffff0000;
+		multText.x = FlxG.width / 2 - multText.width / 2;
+		return multText;
+	}
 }
