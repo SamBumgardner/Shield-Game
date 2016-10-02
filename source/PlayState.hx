@@ -107,6 +107,7 @@ class PlayState extends FlxTransitionableState
 		add(_UiManager.uiGameOver);
 		
 		Enemy.gameOverProjCleanup();
+		_robotChar.kill();
 
 		_gameIsOver = true;
 	}
