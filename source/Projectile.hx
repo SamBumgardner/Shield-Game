@@ -43,7 +43,7 @@ class Projectile extends FlxSprite
 		animation.add("caught", [1], 1, false);
 		animation.add("released", [1], 1, false, false, true);
 		
-		force = 50;
+		force = 20;
 		damage = 1;
 	}
 	

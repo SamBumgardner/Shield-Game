@@ -20,6 +20,8 @@ class DamageableActor extends FlxSprite
 	private var injuredColor:Int;
 	private var alreadyHurtColor:Bool;
 	
+	public var isDead:Bool = false;
+	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
@@ -54,8 +56,8 @@ class DamageableActor extends FlxSprite
 	{
 		if (vulnerable == true)
 		{
-			hurt(damage);
 			healthState.transitionStates(hurtTransition);
+			hurt(damage);
 		}
 	}
 	

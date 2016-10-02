@@ -12,7 +12,7 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 class PhysicalEnemy extends Enemy
 {
 	
-	private static var physProjectilePool:FlxTypedGroup<Projectile>;
+	public static var physProjectilePool:FlxTypedGroup<Projectile>;
 	
 	private static var maxYSpeed:Float = 60;
 	private static var maxXSpeed:Float = 50;

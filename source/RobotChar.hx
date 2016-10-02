@@ -17,9 +17,9 @@ class RobotChar extends PlayerChar
 	
 	private var shieldActiveSpeed:Int = 100;
 	private var shieldInactiveSpeed:Int = 160;
-	private var shieldMaxCapacity:Int = 1000;
-	private var shieldCurrCapacity:Int = 0;
-	private var shieldCapacityCooldown:Int = 5;
+	public var shieldMaxCapacity:Int = 1000;
+	public var shieldCurrCapacity:Int = 0;
+	private var shieldCapacityCooldown:Int = 2;
 	private var shieldRaiseDelay:Int = 30;
 	private var shieldDropDelay:Int = 30;
 	
@@ -31,6 +31,8 @@ class RobotChar extends PlayerChar
 
 	private var brokenSpeed:Int = 50;
 	private var brokenColor:Int = 0x888888;
+	
+	private var deadSpeed:Int = 120;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
@@ -72,13 +74,28 @@ class RobotChar extends PlayerChar
 	
 	override public function kill():Void
 	{
-		shieldState.transitionStates(brokenTransition);
-		super.kill();
+		healthState.transitionStates(deadTransition);
 	}
 	
 	public function addToCapacity(force:Int):Void
 	{
 		shieldCurrCapacity += force;
+	}
+	
+	private function deadTransition():Int
+	{
+		shieldState.transitionStates(brokenTransition);
+		healthState.transitionStates(recoveryTransition);
+		isDead = true;
+		velocity.set(0, deadSpeed);
+		healthState.activeState = deadState;
+		return -1;
+	}
+	
+	private function deadState():Void
+	{
+		velocity.set(0, deadSpeed);
+		return;
 	}
 	
 	private function inactiveTransition():Int
@@ -177,9 +194,13 @@ class RobotChar extends PlayerChar
 	
 	override public function update(elapsed:Float):Void 
 	{
-		movement();
-		shieldState.update();
-		shield.updatePosition(elapsed, x - offset.x + shieldOffsetX, y - offset.y + shieldOffsetY);
+		if (!isDead)
+		{
+			checkInputs();
+			movement();
+			shieldState.update();
+			shield.updatePosition(elapsed, x - offset.x + shieldOffsetX, y - offset.y + shieldOffsetY);
+		}
 		super.update(elapsed);
 	}
 }
