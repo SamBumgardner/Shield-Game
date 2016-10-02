@@ -33,9 +33,7 @@ class PlayerChar extends DamageableActor
 	private function checkInputs():Void{};
 	
 	private function movement():Void
-	{
-		checkInputs();
-		
+	{	
 		if (_up && _down)
 			_up = _down = false;
 		if (_left && _right)

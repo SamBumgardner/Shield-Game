@@ -13,7 +13,7 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 class EnergyEnemy extends Enemy
 {
 
-	private static var enProjectilePool:FlxTypedGroup<Projectile>;
+	public static var enProjectilePool:FlxTypedGroup<Projectile>;
 	
 	private static var maxYSpeed:Float = 80;
 	private static var maxXSpeed:Float = 80;

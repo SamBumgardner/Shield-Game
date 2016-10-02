@@ -19,7 +19,7 @@ class Enemy extends DamageableActor
 	public var xSpeed:Float;
 	public var ySpeed:Float;
 	
-	public var force:Int = 5;
+	public var force:Int = 2;
 	
 	private var projectilePool:FlxTypedGroup<Projectile>;
 	
@@ -32,6 +32,13 @@ class Enemy extends DamageableActor
 		hurtTime = 4;
 		recoveryTime = 0;
 		injuredColor = 0x333333;
+	}
+	
+	public static function gameOverProjCleanup():Void
+	{
+		PhysicalEnemy.physProjectilePool = null;
+		BioEnemy.bioProjectilePool = null;
+		EnergyEnemy.enProjectilePool = null;
 	}
 	
 	private function initializeProjectilePool(type:Int):Void
@@ -128,6 +135,11 @@ class Enemy extends DamageableActor
 	{
 		(cast FlxG.state)._grpEnemies.remove(cast this, true);
 		(cast FlxG.state)._grpActors.remove(cast this, true);
+		if (health <= 0)
+		{
+			(cast FlxG.state).increaseMultiplier();
+			(cast FlxG.state).increaseScore(75);
+		}
 		super.kill();
 	}
 	
