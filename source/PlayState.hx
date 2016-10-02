@@ -106,7 +106,6 @@ class PlayState extends FlxTransitionableState
 		FlxG.camera.shake(0.01, 0.2);
 		add(_UiManager.uiGameOver);
 		
-		Enemy.gameOverProjCleanup();
 		_robotChar.kill();
 
 		_gameIsOver = true;
@@ -257,6 +256,7 @@ class PlayState extends FlxTransitionableState
 		{
 			if (FlxG.keys.anyPressed([R]))
 			{
+				Enemy.gameOverProjCleanup();
 				FlxG.resetState();
 			}
 		}
