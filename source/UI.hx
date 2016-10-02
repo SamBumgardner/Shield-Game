@@ -44,8 +44,8 @@ class UI
 		setUpInitialMenu(robot, mechanic);
 		
 		setUpCapacityBar(robot, 265, 900);
-		setUpMechHealth(mechanic, 35, 900);
-		setUpRoboHealth(robot, 1050, 900);
+		setUpRoboHealth(robot, 35, 900);
+		setUpMechHealth(mechanic, 1050, 900);
 		
 		setUpGameOver();
 	}
