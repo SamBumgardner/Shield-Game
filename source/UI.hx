@@ -63,7 +63,7 @@ class UI
 		
 		var center = mechanic.getMidpoint();
 		
-		var up  	= new FlxText(center.x, center.y - 80, "UP", 18);
+		var up  	= new FlxText(center.x, center.y - 92, "UP", 18);
 		var down 	= new FlxText(center.x, center.y + 64, "DOWN", 18);
 		var left	= new FlxText(center.x - 48, center.y, "LEFT", 18);
 		var right	= new FlxText(center.x + 48, center.y, "RIGHT", 18);
