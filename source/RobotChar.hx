@@ -66,7 +66,9 @@ class RobotChar extends PlayerChar
 		shield = new EnergyShield();
 		
 		shieldGraphic = new FlxSprite(x, y);
+		#if debug
 		shieldGraphic.ignoreDrawDebug = true;
+		#end
 		shieldGraphic.set_alpha(.5);
 		shieldGraphic.offset.set(73, 115);
 		shieldGraphic.visible = false;
