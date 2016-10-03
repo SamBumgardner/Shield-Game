@@ -10,17 +10,21 @@ import flixel.FlxG;
  * ...
  * @author Samuel Bumgardner
  */
-class PlayerChar extends FlxSprite
+class PlayerChar extends DamageableActor
 {
 	public var speed:Float;
 	
 	public var wallCollidedX:Bool = false;
 	public var wallCollidedY:Bool = false;
 	
-	private var _up:Bool = false;
-	private var _down:Bool = false;
-	private var _left:Bool = false;
-	private var _right:Bool = false;
+	public var force:Int;
+
+	public var _up:Bool = false;
+	public var _down:Bool = false;
+	public var _left:Bool = false;
+	public var _right:Bool = false;
+	
+	private var noMoveAnim = false;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
@@ -31,9 +35,7 @@ class PlayerChar extends FlxSprite
 	private function checkInputs():Void{};
 	
 	private function movement():Void
-	{
-		checkInputs();
-		
+	{	
 		if (_up && _down)
 			_up = _down = false;
 		if (_left && _right)
@@ -45,11 +47,17 @@ class PlayerChar extends FlxSprite
 			if (_up)
 			{
 				mA = -90;
-				if (_left)
-					mA -= 45;
-				else if (_right)
-					mA += 45;
 				facing = FlxObject.UP;
+				if (_left)
+				{
+					mA -= 45;
+					facing = FlxObject.LEFT;
+				}
+				else if (_right)
+				{
+					mA += 45;
+					facing = FlxObject.RIGHT;
+				}
 			}
 			else if (_down)
 			{
@@ -73,27 +81,27 @@ class PlayerChar extends FlxSprite
 			velocity.set(speed, 0);
 			velocity.rotate(FlxPoint.weak(0, 0), mA);
 		
-			//if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
-			//{
-				//switch (facing)
-				//{
-					//case FlxObject.LEFT, FlxObject.RIGHT:
-						//animation.play("lr");
-					//case FlxObject.UP:
-						//animation.play("u");
-					//case FlxObject.DOWN:
-						//animation.play("d");
-				//}
-			//}
+			if ((velocity.x != 0 || velocity.y != 0) && !noMoveAnim)
+			{
+				switch (facing)
+				{
+					case FlxObject.LEFT:
+						animation.play("l");
+					case FlxObject.RIGHT:
+						animation.play("r");
+					case FlxObject.UP, FlxObject.DOWN:
+						animation.play("u");
+				}
+			}
+			else
+			{
+			}
 		}
 		else
 		{
+			if(!noMoveAnim)
+				animation.play("u");
 			velocity.set(0, 0);
 		}
-	}
-	
-	public override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
 	}
 }
