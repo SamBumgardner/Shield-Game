@@ -14,7 +14,7 @@ class RepairPowerup extends Powerup
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
-		makeGraphic(48, 48, 0xff0000ff);
+		loadGraphic(AssetPaths.repairPowerup__png);
 	}
 	
 	override public function powerupEffect():Void
