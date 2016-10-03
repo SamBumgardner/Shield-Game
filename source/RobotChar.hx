@@ -199,6 +199,7 @@ class RobotChar extends PlayerChar
 	private function brokenTransition():Int
 	{
 		shield.broken();
+		shieldGraphic.visible = false;
 		speed = brokenSpeed;
 		adjustColor(brokenColor);
 		shieldState.activeState = brokenShieldState;
