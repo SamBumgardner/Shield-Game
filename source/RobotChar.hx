@@ -26,8 +26,9 @@ class RobotChar extends PlayerChar
 	private var spacebar:Bool;
 	
 	public var shield:EnergyShield;
-	private var shieldOffsetY = -70;
-	private var shieldOffsetX = -64;
+	public var shieldGraphic:FlxSprite;
+	private var shieldOffsetY = -12;
+	private var shieldOffsetX = 0;
 
 	private var brokenSpeed:Int = 50;
 	private var brokenColor:Int = 0x888888;
@@ -38,16 +39,17 @@ class RobotChar extends PlayerChar
 	{
 		super(X, Y);
 		
-		loadGraphic(AssetPaths.defender__png, true, 128, 128);
+		loadGraphic(AssetPaths.robotSheet__png, true, 250, 200);
 		setSize(104, 104);
-		offset.set(12, 12);
+		offset.set(73, 76);
 		
-		//setFacingFlip(FlxObject.LEFT, false, false);
-		//setFacingFlip(FlxObject.RIGHT, true, false);
-		
-		//animation.add("lr", [3, 4, 3, 5], 6, false);
-		//animation.add("u", [6, 7, 6, 8], 6, false);
-		//animation.add("d", [0, 1, 0, 2], 6, false);
+		animation.add("u", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15);
+		animation.add("l", [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31], 15);
+		animation.add("r", [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47], 15);
+		animation.add("shield_raise", [48, 49, 50], 6, false);
+		animation.add("shield_raised", [50], 1, true);
+		animation.add("shield_lower", [50, 51, 52], 6, false);
+		animation.add("defeated", [53, 54], 1, false);
 		
 		speed = shieldInactiveSpeed;
 		health = 100;
@@ -60,6 +62,15 @@ class RobotChar extends PlayerChar
 		shieldState = new FSM(inactiveShieldState);
 		
 		shield = new EnergyShield();
+		
+		shieldGraphic = new FlxSprite(x, y);
+		shieldGraphic.ignoreDrawDebug = true;
+		shieldGraphic.set_alpha(.5);
+		shieldGraphic.offset.set(73, 115);
+		shieldGraphic.visible = false;
+		shieldGraphic.loadGraphic(AssetPaths.shield__png, true, 250, 200);
+		shieldGraphic.animation.add("activating", [0, 1, 2], 12, false);
+		
 		FlxG.state.add(shield);
 	}
 	
@@ -86,6 +97,9 @@ class RobotChar extends PlayerChar
 	{
 		shieldState.transitionStates(brokenTransition);
 		healthState.transitionStates(recoveryTransition);
+		adjustColor(injuredColor);
+		animation.play("defeated");
+		noMoveAnim = true;
 		isDead = true;
 		velocity.set(0, deadSpeed);
 		healthState.activeState = deadState;
@@ -101,6 +115,7 @@ class RobotChar extends PlayerChar
 	private function inactiveTransition():Int
 	{
 		speed = shieldInactiveSpeed;
+		noMoveAnim = false;
 		shieldState.activeState = inactiveShieldState;
 		return -1;
 	}
@@ -118,7 +133,8 @@ class RobotChar extends PlayerChar
 	private function activatingTransition():Int
 	{
 		speed = 0;
-		//Play animation of bringing up shield
+		animation.play("shield_raise", true);
+		noMoveAnim = true;
 		shieldState.activeState = activatingShieldState;
 		shieldState.nextTransition = activeTransition;
 		return 30;
@@ -134,7 +150,11 @@ class RobotChar extends PlayerChar
 	private function activeTransition():Int
 	{
 		speed = shieldActiveSpeed;
+		noMoveAnim = false;
 		shield.on();
+		shieldGraphic.visible = true;
+		shieldGraphic.animation.play("activating");
+		shieldGraphic.animation.finishCallback = function(_) { return; };
 		shieldState.activeState = activeShieldState;
 		return -1;
 	}
@@ -150,8 +170,13 @@ class RobotChar extends PlayerChar
 	private function releasingTransition():Int
 	{
 		speed = 0;
-		shield.off();
-		//Play animation of returning to normal.
+		if (shield.off())
+		{
+			shieldGraphic.animation.play("activating", true, true);
+			shieldGraphic.animation.finishCallback = function(_) { shieldGraphic.visible = false; };
+		}
+		animation.play("shield_lower", true);
+		noMoveAnim = true;
 		shieldState.activeState = releasingShieldState;
 		shieldState.nextTransition = inactiveTransition;
 		return 30; //should be replaced with however long the animation is.
@@ -159,8 +184,10 @@ class RobotChar extends PlayerChar
 	
 	private function releasingTransitionEarly():Int
 	{
+		var currFrame = (animation.frameIndex - 50) * -1;
+		trace(currFrame);
 		releasingTransition();
-		//need to play a shorter version of the normal animation.
+		animation.play("shield_raise", true, true, currFrame);
 		return 30 - shieldState.stateTimer;
 	}
 	
@@ -172,6 +199,7 @@ class RobotChar extends PlayerChar
 	private function brokenTransition():Int
 	{
 		shield.broken();
+		shieldGraphic.visible = false;
 		speed = brokenSpeed;
 		adjustColor(brokenColor);
 		shieldState.activeState = brokenShieldState;
@@ -201,6 +229,7 @@ class RobotChar extends PlayerChar
 			shieldState.update();
 			shield.updatePosition(elapsed, x - offset.x + shieldOffsetX, y - offset.y + shieldOffsetY);
 		}
+		shieldGraphic.velocity = velocity;
 		super.update(elapsed);
 	}
 }

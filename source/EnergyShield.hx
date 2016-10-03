@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
@@ -11,7 +12,7 @@ import flixel.util.FlxColor;
  * ...
  * @author Samuel Bumgardner
  */
-class EnergyShield extends FlxSprite
+class EnergyShield extends FlxObject
 {
 
 	private var hidden:Bool;
@@ -22,23 +23,28 @@ class EnergyShield extends FlxSprite
 	
 	private var projectileCounter:Int = 0;
 	
-	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
+	public function new(?X:Float=0, ?Y:Float=0) 
 	{
-		super(X, Y, SimpleGraphic);
-		makeGraphic(256, 64, FlxColor.BLUE);
+		super(X, Y, 248, 86);
 		
 		caughtProjectiles = new FlxTypedGroup<Projectile>();
 		
 		off();
 	}
 	
-	public function off():Void
+	public function off():Bool
 	{
-		hidden = true;
-		y = -height * 2;
-		caughtProjectiles.forEach(fireProjectile);
-		projectileCounter = 0;
-		caughtProjectiles.clear();
+		if (!hidden)
+		{
+			hidden = true;
+			y = -height * 2;
+			caughtProjectiles.forEach(fireProjectile);
+			projectileCounter = 0;
+			caughtProjectiles.clear();
+			return true;
+		}
+		else
+			return false;
 	}
 	
 	public function broken():Void

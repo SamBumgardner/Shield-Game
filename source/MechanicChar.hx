@@ -20,16 +20,13 @@ class MechanicChar extends PlayerChar
 	{
 		super(X, Y);
 		
-		loadGraphic(AssetPaths.defended__png, true, 64, 101);
+		loadGraphic(AssetPaths.mechanicSheet__png, true, 80, 124);
 		setSize(32, 32);
-		offset.set(16, 34);
+		offset.set(24, 48);
 		
-		//setFacingFlip(FlxObject.LEFT, false, false);
-		//setFacingFlip(FlxObject.RIGHT, true, false);
-		//
-		//animation.add("lr", [3, 4, 3, 5], 6, false);
-		//animation.add("u", [6, 7, 6, 8], 6, false);
-		//animation.add("d", [0, 1, 0, 2], 6, false);
+		animation.add("u", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 15);
+		animation.add("l", [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 15);
+		animation.add("r", [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35], 15);
 		speed = 190;
 		health = 5;
 		hurtTime = 4;
