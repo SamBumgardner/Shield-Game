@@ -24,10 +24,11 @@ class PlayState extends FlxTransitionableState
 	private var _grpEnemies:FlxTypedGroup<FlxSprite>;
 	private var _grpActors:FlxTypedGroup<FlxSprite>;
 	private var _grpBoundaries:FlxGroup;
-	private var _grpBackgroundSprites:FlxGroup;
+	public var _grpBackgroundSprites:FlxGroup;
 	private var _mechanicChar:MechanicChar;
 	private var _robotChar:RobotChar;
 	private var _grpUI:FlxTypedGroup<FlxSprite>;
+	public var _grpPowerups:FlxTypedGroup<Powerup>;
 	private var _UiManager:UI;
 	private var _enemySpawner:EnemySpawner;
 	
@@ -60,6 +61,8 @@ class PlayState extends FlxTransitionableState
 		
 		_grpBackgroundSprites = new FlxGroup();
 		add(_grpBackgroundSprites);
+		
+		_grpPowerups = new FlxTypedGroup<Powerup>();
 		
 		_grpActors = new FlxTypedGroup<FlxSprite>();
 		add(_grpActors);
@@ -147,6 +150,11 @@ class PlayState extends FlxTransitionableState
 	private function sortByOffsetY(Order:Int, Obj1:FlxObject, Obj2:FlxObject):Int
 	{
 		return FlxSort.byValues(Order, Obj1.y + Obj1.height + (cast Obj1).offset.y, Obj2.y + Obj2.height + (cast Obj2).offset.y);
+	}
+	
+	private function mechanicPowerupCollisions(mechanic:MechanicChar, powerup:Powerup):Void
+	{
+		powerup.powerupEffect();
 	}
 	
 	private function deadlyProjectileCollisions(actor:Dynamic, projectile:Projectile):Void
@@ -261,7 +269,7 @@ class PlayState extends FlxTransitionableState
 		{
 			if (FlxG.keys.anyPressed([R]))
 			{
-				Enemy.gameOverProjCleanup();
+				Enemy.gameOverPoolCleanup();
 				FlxG.resetState();
 			}
 		}
@@ -282,6 +290,7 @@ class PlayState extends FlxTransitionableState
 		FlxG.overlap(_grpBoundaries, _grpCharacters, null, separateAndRemember);
 		FlxG.overlap(_robotChar, _mechanicChar, null, conditionalSeparate);
 		
+		FlxG.overlap(_mechanicChar, _grpPowerups, mechanicPowerupCollisions);
 		FlxG.overlap(_robotChar.shield, _grpEnemyProj, shieldProjectileCollisions);
 		FlxG.overlap(_grpCharacters, _grpEnemyProj, deadlyProjectileCollisions);
 		FlxG.overlap(_grpEnemies, _grpPlayerProj, deadlyProjectileCollisions);

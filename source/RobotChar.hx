@@ -23,6 +23,8 @@ class RobotChar extends PlayerChar
 	private var shieldRaiseDelay:Int = 30;
 	private var shieldDropDelay:Int = 30;
 	
+	public var maxHealth:Int = 50;
+	
 	private var spacebar:Bool;
 	
 	public var shield:EnergyShield;
@@ -52,7 +54,7 @@ class RobotChar extends PlayerChar
 		animation.add("defeated", [53, 54], 1, false);
 		
 		speed = shieldInactiveSpeed;
-		health = 100;
+		health = maxHealth;
 		hurtTime = 4;
 		recoveryTime = 0;
 		injuredColor = 0x555555;
@@ -91,6 +93,11 @@ class RobotChar extends PlayerChar
 	public function addToCapacity(force:Int):Void
 	{
 		shieldCurrCapacity += force;
+	}
+	
+	public function heal(amount:Int):Void
+	{
+		health = Math.min(health + amount, maxHealth);
 	}
 	
 	private function deadTransition():Int
@@ -211,7 +218,7 @@ class RobotChar extends PlayerChar
 		if (shieldCurrCapacity > 0)
 			Math.max(shieldCurrCapacity -= shieldCapacityCooldown, 0);
 		
-		if (shieldCurrCapacity == 0)
+		if (shieldCurrCapacity <= 0)
 		{
 			adjustColor(brokenColor);
 			shieldState.transitionStates(inactiveTransition);
