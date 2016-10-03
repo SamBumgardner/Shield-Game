@@ -24,6 +24,7 @@ class PlayState extends FlxTransitionableState
 	private var _grpEnemies:FlxTypedGroup<FlxSprite>;
 	private var _grpActors:FlxTypedGroup<FlxSprite>;
 	private var _grpBoundaries:FlxGroup;
+	private var _grpBackgroundSprites:FlxGroup;
 	private var _mechanicChar:MechanicChar;
 	private var _robotChar:RobotChar;
 	private var _grpUI:FlxTypedGroup<FlxSprite>;
@@ -57,6 +58,9 @@ class PlayState extends FlxTransitionableState
 		_grpBoundaries = FlxCollision.createCameraWall(FlxG.camera, false, 15);
 		add(_grpBoundaries);
 		
+		_grpBackgroundSprites = new FlxGroup();
+		add(_grpBackgroundSprites);
+		
 		_grpActors = new FlxTypedGroup<FlxSprite>();
 		add(_grpActors);
 		
@@ -72,6 +76,7 @@ class PlayState extends FlxTransitionableState
 		_robotChar = new RobotChar(FlxG.width / 4, 500);
 		_grpCharacters.add(_robotChar);
 		_grpActors.add(_robotChar);
+		_grpBackgroundSprites.add(_robotChar.shieldGraphic);
 		
 		_grpEnemies = new FlxTypedGroup<FlxSprite>();
 		

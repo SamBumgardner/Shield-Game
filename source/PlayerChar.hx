@@ -24,6 +24,8 @@ class PlayerChar extends DamageableActor
 	public var _left:Bool = false;
 	public var _right:Bool = false;
 	
+	private var noMoveAnim = false;
+	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
 		super(X, Y);
@@ -45,11 +47,17 @@ class PlayerChar extends DamageableActor
 			if (_up)
 			{
 				mA = -90;
-				if (_left)
-					mA -= 45;
-				else if (_right)
-					mA += 45;
 				facing = FlxObject.UP;
+				if (_left)
+				{
+					mA -= 45;
+					facing = FlxObject.LEFT;
+				}
+				else if (_right)
+				{
+					mA += 45;
+					facing = FlxObject.RIGHT;
+				}
 			}
 			else if (_down)
 			{
@@ -73,21 +81,26 @@ class PlayerChar extends DamageableActor
 			velocity.set(speed, 0);
 			velocity.rotate(FlxPoint.weak(0, 0), mA);
 		
-			//if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
-			//{
-				//switch (facing)
-				//{
-					//case FlxObject.LEFT, FlxObject.RIGHT:
-						//animation.play("lr");
-					//case FlxObject.UP:
-						//animation.play("u");
-					//case FlxObject.DOWN:
-						//animation.play("d");
-				//}
-			//}
+			if ((velocity.x != 0 || velocity.y != 0) && !noMoveAnim)
+			{
+				switch (facing)
+				{
+					case FlxObject.LEFT:
+						animation.play("l");
+					case FlxObject.RIGHT:
+						animation.play("r");
+					case FlxObject.UP, FlxObject.DOWN:
+						animation.play("u");
+				}
+			}
+			else
+			{
+			}
 		}
 		else
 		{
+			if(!noMoveAnim)
+				animation.play("u");
 			velocity.set(0, 0);
 		}
 	}
