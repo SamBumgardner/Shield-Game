@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxBasic.FlxType;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -19,9 +20,11 @@ class Enemy extends DamageableActor
 	public var xSpeed:Float;
 	public var ySpeed:Float;
 	
-	public var force:Int = 2;
+	public var force:Int = 1;
 	
 	private var projectilePool:FlxTypedGroup<Projectile>;
+	private static var repairPowerupPool:FlxTypedGroup<RepairPowerup>;
+	
 	
 	private var actionState:FSM;
 	
@@ -32,13 +35,19 @@ class Enemy extends DamageableActor
 		hurtTime = 4;
 		recoveryTime = 0;
 		injuredColor = 0x333333;
+		
+		if (Enemy.repairPowerupPool == null)
+		{
+			initializeRepairPowerupPool();
+		}
 	}
 	
-	public static function gameOverProjCleanup():Void
+	public static function gameOverPoolCleanup():Void
 	{
 		PhysicalEnemy.physProjectilePool = null;
 		BioEnemy.bioProjectilePool = null;
 		EnergyEnemy.enProjectilePool = null;
+		Enemy.repairPowerupPool = null;
 	}
 	
 	private function initializeProjectilePool(type:Int):Void
@@ -50,6 +59,17 @@ class Enemy extends DamageableActor
 			projectilePool.add(projectile);
 		}
 		FlxG.state.add(projectilePool);
+	}
+	
+	private function initializeRepairPowerupPool():Void
+	{
+		Enemy.repairPowerupPool = new FlxTypedGroup<RepairPowerup>();
+		for (i in 0...10)
+		{
+			var powUp = new RepairPowerup();
+			powUp.kill();
+			Enemy.repairPowerupPool.add(powUp);
+		}
 	}
 	
 	public function init(X:Float, Y:Float):Void
@@ -93,9 +113,17 @@ class Enemy extends DamageableActor
 	
 	private function fireProjectile(firingAngle:Float, firingSpeed:Float, projType:Int):Void
 	{
-		var newProjectile = projectilePool.recycle(Projectile, projFactory.bind(projType)); //Need to fix this because projectile now takes an argument.
+		var newProjectile = projectilePool.recycle(Projectile, projFactory.bind(projType)); 
 		newProjectile.init(getMidpoint().x - 8, getMidpoint().y - 8, firingAngle, firingSpeed);
 		(cast FlxG.state)._grpEnemyProj.add(newProjectile);
+	}
+	
+	private function spawnRepairPowerup():Void
+	{
+		var newRepairPowerup = repairPowerupPool.recycle(RepairPowerup);
+		newRepairPowerup.init(getMidpoint().x - 8, getMidpoint().y - 8);
+		(cast FlxG.state)._grpBackgroundSprites.add(newRepairPowerup);
+		(cast FlxG.state)._grpPowerups.add(newRepairPowerup);
 	}
 	
 	

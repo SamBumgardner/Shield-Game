@@ -160,7 +160,7 @@ class UI
 		
 		_robotHealthFg = new FlxSprite(X, Y, AssetPaths.health_fg__png);
 		
-		_robotHealthBar = new FlxBar(X, Y, LEFT_TO_RIGHT, 200, 50, robot, "health", 0, 100);
+		_robotHealthBar = new FlxBar(X, Y, LEFT_TO_RIGHT, 200, 50, robot, "health", 0, robot.maxHealth);
 		_robotHealthBar.createGradientBar([], [0xcc88ff88, 0xcc00ff00]); 
 		_robotHealthBar.numDivisions = 100;
 		uiBarSprites.add(_robotHealthBar);
