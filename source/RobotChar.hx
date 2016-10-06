@@ -34,6 +34,7 @@ class RobotChar extends PlayerChar
 
 	private var brokenSpeed:Int = 50;
 	private var brokenColor:Int = 0x888888;
+	private var isBroken:Bool = false;
 	
 	private var deadSpeed:Int = 120;
 	
@@ -104,17 +105,21 @@ class RobotChar extends PlayerChar
 	
 	private function deadTransition():Int
 	{
-		shieldState.transitionStates(brokenTransition);
-		healthState.transitionStates(recoveryTransition);
-		if (alreadyHurtColor)
-			adjustColor(injuredColor);
-		animation.play("defeated");
-		offset.x += 24;
-		offset.y += 32;
-		noMoveAnim = true;
-		isDead = true;
-		velocity.set(0, deadSpeed);
-		healthState.activeState = deadState;
+		if (!isDead)
+		{
+			if (!isBroken)
+				shieldState.transitionStates(brokenTransition);
+			healthState.transitionStates(recoveryTransition);
+			if (alreadyHurtColor)
+				adjustColor(injuredColor);
+			animation.play("defeated");
+			offset.x += 24;
+			offset.y += 32;
+			noMoveAnim = true;
+			isDead = true;
+			velocity.set(0, deadSpeed);
+			healthState.activeState = deadState;
+		}
 		return -1;
 	}
 	
@@ -211,6 +216,7 @@ class RobotChar extends PlayerChar
 	{
 		shield.broken();
 		shieldGraphic.visible = false;
+		isBroken = true;
 		speed = brokenSpeed;
 		adjustColor(brokenColor);
 		shieldState.activeState = brokenShieldState;
