@@ -110,8 +110,6 @@ class RobotChar extends PlayerChar
 			if (!isBroken)
 				shieldState.transitionStates(brokenTransition);
 			healthState.transitionStates(recoveryTransition);
-			if (alreadyHurtColor)
-				adjustColor(injuredColor);
 			animation.play("defeated");
 			offset.x += 24;
 			offset.y += 32;

@@ -64,8 +64,11 @@ class DamageableActor extends FlxSprite
 	
 	private function recoveryTransition():Int
 	{
-		adjustColor(injuredColor);
-		alreadyHurtColor = false;
+		if(alreadyHurtColor)
+		{	
+			adjustColor(injuredColor);
+			alreadyHurtColor = false;
+		}
 		healthState.activeState = recoveryState;
 		healthState.nextTransition = normTransition;
 		vulnerable = false;
