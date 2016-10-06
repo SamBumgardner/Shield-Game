@@ -197,7 +197,6 @@ class RobotChar extends PlayerChar
 	private function releasingTransitionEarly():Int
 	{
 		var currFrame = (animation.frameIndex - 50) * -1;
-		trace(currFrame);
 		releasingTransition();
 		animation.play("shield_raise", true, true, currFrame);
 		return 30 - shieldState.stateTimer;
