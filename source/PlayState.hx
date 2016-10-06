@@ -184,7 +184,8 @@ class PlayState extends FlxTransitionableState
 		if (!character.isDead)
 		{
 			character.damaged(enemy.force);
-			enemy.damaged(character.force);
+			if (character.force > 0)
+				enemy.damaged(character.force);
 			scoreState.transitionStates(multiplierInactiveTransition);
 		}
 		
