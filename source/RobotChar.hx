@@ -240,6 +240,10 @@ class RobotChar extends PlayerChar
 			shieldState.update();
 			shield.updatePosition(elapsed, x - offset.x + shieldOffsetX, y - offset.y + shieldOffsetY);
 		}
+		else if (shieldCurrCapacity > 0)
+		{
+			shieldCurrCapacity -= shieldCapacityCooldown;
+		}
 		shieldGraphic.velocity = velocity;
 		super.update(elapsed);
 	}
